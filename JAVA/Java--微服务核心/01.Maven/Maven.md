@@ -256,7 +256,7 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 
 ##### 2、解压 Maven 核心程序
 
-核心程序压缩包：apache-maven-3.8.4-bin.zip，解压到非中文、没有空格的目录。例如：
+核心程序压缩包：apache-maven-3.8.4-bin.zip，解压到<span style="color:#4662d9; font-weight:bold">非中文、没有空格</span>的目录。例如：
 
 ![](Maven-P/解压Maven核心程序.png)
 
@@ -265,3 +265,19 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 ##### 3、指定本地仓库
 
 本地仓库默认值：用户家目录/.m2/repository。由于本地仓库的默认位置是在用户的家目录下，而家目录往往是在 C 盘，也就是系统盘。将来 Maven 仓库中 jar 包越来越多，仓库体积越来越大，可能会拖慢 C 盘运行速度，影响系统性能。所以建议将 Maven 的本地仓库放在其他盘符下。配置方式如下：
+
+```xml
+<!-- localRepository
+  The path to the local repository maven will use to store artifacts.
+ 
+  Default: ${user.home}/.m2/repository
+<localRepository>/path/to/local/repo</localRepository>
+-->
+<localRepository>D:\maven-repository</localRepository>
+```
+
+本地仓库这个目录，我们手动创建一个空的目录即可。
+
+记住：一定要把 localRepository 标签从注释中拿出来。
+
+注意：本地仓库本身也需要使用一个非中文、没有空格的目录。
