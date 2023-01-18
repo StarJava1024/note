@@ -260,7 +260,7 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 
 ![](Maven-P/解压Maven核心程序.png)
 
-在解压目录中，我们需要着重关注 Maven 的核心配置文件：<span style="color：blue；font-weight：bold">conf/settings.xml<span>
+在解压目录中，我们需要着重关注 Maven 的核心配置文件：<span style="color:blue；font-weight：bold">conf/settings.xml<span>
 
 ##### 3、指定本地仓库
 
