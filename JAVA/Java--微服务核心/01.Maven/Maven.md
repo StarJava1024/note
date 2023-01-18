@@ -1,4 +1,4 @@
-# Maven
+# ![Maven图标](Maven-P/Maven图标.png)
 
 ## Chr 1	Maven 概述
 
@@ -179,3 +179,89 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 
 - 管理规模庞大的 jar 包，需要专门工具。
 - 脱离 IDE 环境执行构建操作，需要专门工具。
+
+### 二、 What？什么是Maven？
+
+##### 1、构建
+
+> ###### Java项目开发过程中，构建指的是使用【原材料生产产品】的过程
+>
+> - 原材料
+>
+>     - Java源代码
+>
+>     - 基于HTML的Thymeleaf文件
+>     - 图片
+>     - 配置文件
+>     - ……
+>
+>
+> - 产品
+>
+>     - 一个可以在服务器上运行的项目
+>
+> 
+>
+> ###### 构建过程包含的主要的环节：
+>
+> - 清理：删除上一次构建的结果，为下一次构建做好准备
+>
+>     
+>
+> - 编译：Java源程序编译成 *.class 字节码文件
+>
+> - 报告：针对刚才测试的结果生成一个全面的信息
+>
+> - 打包
+>
+>     - Java 工程：jar 包
+>     - Web 工程：war 包
+>
+> - 安装：把一个 Maven 工程经过打包操作生成的jar包或war包存入 Maven 的本地仓库
+>
+> - 部署
+>
+>     - 部署 jar 包：把一个 jar 包部署到 Nexus 私服服务器上
+>     - 部署 war 包：借助相关 Maven 插件（例如 cargo ），将 war 包部署到 Tomcat 服务器上
+
+##### 2、依赖
+> 如果 A 工程里面用到了B工程的类、接口、配置文件等等这样的资源，那么我们就 A 依赖 B。例如：
+>
+> - junit-4.12 依赖 hamcrest-core-1.3
+> - thymeleaf-3.0.12.RELEASE 依赖 ognl-3.1.26
+>     - ognl-3.1.26 依赖 javassist-3.20.0-GA
+> - thymeleaf-3.0.12.RELEASE 依赖 attoparser-2.0.5.RELEASE
+> - thymeleaf-3.0.12.RELEASE 依赖 unbescape-1.1.6.RELEASE
+> - thymeleaf-3.0.12.RELEASE 依赖 slf4j-api-1.7.26
+>
+> 依赖管理中要解决的具体问题：
+>
+> - jar 包的下载：使用 Maven 之后，jar 包会从规范的远程仓库下载到本地
+> - jar 包之间的依赖：通过依赖的传递性自动完成
+> - jar 包之间的冲突：通过对依赖的配置进行调整，让某些jar包不会被导入
+
+##### 3、Maven 的工作机制
+
+![Maven的工作机制](Maven-P/Maven的工作机制.png)
+
+## Chr 2 Maven核心程序解压和配置
+
+### 一、 Maven 核心程序解压与配置
+
+##### 1、Maven 官网地址
+
+[首页](https://maven.apache.org/)        [下载页面](https://maven.apache.org/download.cgi)
+
+![Maven下载文件地址](Maven-P/下载文件.png)
+
+##### 2、解压 Maven 核心程序
+
+核心程序压缩包：apache-maven-3.8.4-bin.zip，解压到非中文、没有空格的目录。例如：
+
+![](Maven-P/解压Maven核心程序.png)
+
+在解压目录中，我们需要着重关注 Maven 的核心配置文件：<span style="color：blue；font-weight：bold">conf/settings.xml<span>
+
+##### 3、指定本地仓库
+
+本地仓库默认值：用户家目录/.m2/repository。由于本地仓库的默认位置是在用户的家目录下，而家目录往往是在 C 盘，也就是系统盘。将来 Maven 仓库中 jar 包越来越多，仓库体积越来越大，可能会拖慢 C 盘运行速度，影响系统性能。所以建议将 Maven 的本地仓库放在其他盘符下。配置方式如下：
