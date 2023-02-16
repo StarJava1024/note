@@ -1457,8 +1457,6 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 在总工程中配置 modules 即可：
 
-<details>
-<summary><span style="color:#4662d9; font-weight:bold">点击查看代码</span></summary>
 ```xml
   <modules>  
     <module>pro04-maven-module</module>
@@ -1466,7 +1464,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
     <module>pro06-maven-module</module>
   </modules>
 ```
-</details>
+
 
 ### 5、依赖循环问题
 
