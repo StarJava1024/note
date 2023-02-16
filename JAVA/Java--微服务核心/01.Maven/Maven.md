@@ -1,12 +1,12 @@
 # ![Maven图标](Maven-P/Maven图标.png)
 
-## Chr 1	Maven 概述
+# Chr 1	Maven 概述
 
-### 一、Why? 为什么要学 Maven ?
+## 一、Why? 为什么要学 Maven ?
 
-##### 1、Maven 作为依赖管理工具
+### 1、Maven 作为依赖管理工具
 
-###### ①  jar 包的规模
+#### ①  jar 包的规模
 
 随着我们使用越来越多的框架，或者框架封装程度越来越高，项目中使用的 jar 包也越来越多。项目中，一 项目里面用到上百个 jar 包是非常正常的。
 
@@ -144,7 +144,7 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
     </dependency>
 ```
 
-###### ②  jar 包的来源
+#### ②  jar 包的来源
 
 > - 这个jar包所属技术的官网。官网通常是英文界面，网站的结构又不尽相同，甚至找到下载链接还发现需要通过特殊的工具下载。
 > - 第三方网站提供下载。问题是不规范，在使用过程中会出现各种问题。
@@ -153,7 +153,7 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 >     - jar 包内的具体细节
 > - 而使用 Maven 后，依赖对应的 jar 包能够自动下载，方便、快捷又规范。
 
-###### ③jar 包之间的依赖关系
+#### ③jar 包之间的依赖关系
 
 框架中使用的 jar 包，不仅数量庞大，而且彼此之间存在错综复杂的依赖关系。依赖关系的复杂程度，已经上升到了完全不能靠人力手动解决的程度。另外，jar 包之间有可能产生冲突。进一步增加了我们在 jar 包使用过程中的难度。
 
@@ -165,24 +165,24 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 >
 > 而使用 Maven 则几乎不需要管理这些关系，极个别的地方调整一下即可，极大的减轻了我们的工作量。
 
-##### 2、Maven 作为构建管理工具
+### 2、Maven 作为构建管理工具
 
-###### ①  你没有注意过的构建
+#### ①  你没有注意过的构建
 
 你可以不使用 Maven，但是构建必须要做。当我们使用 IDEA 进行开发时，构建是 IDEA 替我们做的。
 
-###### ②  脱离 IDE 环境仍需构建
+#### ②  脱离 IDE 环境仍需构建
 
 ![脱离IDE环境仍需构建](Maven-P/脱离IDE环境仍需构建.png)
 
-##### 3、结论
+### 3、结论
 
 - 管理规模庞大的 jar 包，需要专门工具。
 - 脱离 IDE 环境执行构建操作，需要专门工具。
 
-### 二、 What？什么是Maven？
+## 二、 What？什么是Maven？
 
-##### 1、构建
+### 1、构建
 
 > ###### Java项目开发过程中，构建指的是使用【原材料生产产品】的过程
 >
@@ -224,7 +224,7 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 >     - 部署 jar 包：把一个 jar 包部署到 Nexus 私服服务器上
 >     - 部署 war 包：借助相关 Maven 插件（例如 cargo ），将 war 包部署到 Tomcat 服务器上
 
-##### 2、依赖
+### 2、依赖
 > 如果 A 工程里面用到了B工程的类、接口、配置文件等等这样的资源，那么我们就 A 依赖 B。例如：
 >
 > - junit-4.12 依赖 hamcrest-core-1.3
@@ -240,29 +240,29 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 > - jar 包之间的依赖：通过依赖的传递性自动完成
 > - jar 包之间的冲突：通过对依赖的配置进行调整，让某些jar包不会被导入
 
-##### 3、Maven 的工作机制
+### 3、Maven 的工作机制
 
 ![Maven的工作机制](Maven-P/Maven的工作机制.png)
 
-## Chr 2	Maven核心程序解压和配置
+# Chr 2	Maven核心程序解压和配置
 
-### 一、 Maven 核心程序解压与配置
+## 一、 Maven 核心程序解压与配置
 
-##### 1、Maven 官网地址
+### 1、Maven 官网地址
 
 [首页](https://maven.apache.org/)        [下载页面](https://maven.apache.org/download.cgi)
 
 ![Maven下载文件地址](Maven-P/下载文件.png)
 
-##### 2、解压 Maven 核心程序
+### 2、解压 Maven 核心程序
 
 核心程序压缩包：apache-maven-3.8.4-bin.zip，解压到<span style="color:#4662d9; font-weight:bold">非中文、没有空格</span>的目录。例如：
 
-![](Maven-P/解压Maven核心程序.png)
+![解压Maven核心程序](Maven-P/解压Maven核心程序.png)
 
 在解压目录中，我们需要着重关注 Maven 的核心配置文件：<span style="color:#4662d9; font-weight:bold">conf/settings.xml</span>
 
-##### 3、指定本地仓库
+### 3、指定本地仓库
 
 本地仓库默认值：用户家目录/.m2/repository。由于本地仓库的默认位置是在用户的家目录下，而家目录往往是在 C 盘，也就是系统盘。将来 Maven 仓库中 jar 包越来越多，仓库体积越来越大，可能会拖慢 C 盘运行速度，影响系统性能。所以建议将 Maven 的本地仓库放在其他盘符下。配置方式如下：
 
@@ -284,7 +284,7 @@ org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.2.6.RELEASE:compil
 
 <span style="color:red; font-weight:bold">注意：本地仓库本身也需要使用一个非中文、没有空格的目录。</span>
 
-##### 4、配置阿里云提供的镜像仓库
+### 4、配置阿里云提供的镜像仓库
 
 Maven 下载 jar 包默认访问境外的中央仓库，而国外网站速度很慢。改成阿里云提供的镜像仓库，<span style="color:#4662d9; font-weight:bold">访问国内网站</span>，可以让 Maven 下载 jar 包的时候速度更快。配置的方式是：
 
@@ -303,7 +303,7 @@ Maven 下载 jar 包默认访问境外的中央仓库，而国外网站速度很
   </mirror>
 ```
 
-##### 5、配置 Maven 工程的基础 JDK 版本
+### 5、配置 Maven 工程的基础 JDK 版本
 
 如果按照默认配置运行，Java 工程使用的默认 JDK 版本是 1.5，而我们熟悉和常用的是<span style="color:#4662d9; font-weight:bold"> JDK 1.8 版本</span>。修改配置的方式是：将<span style="color:#4662d9; font-weight:bold"> profile 标签</span>整个复制到 settings.xml 文件的<span style="color:#4662d9; font-weight:bold"> profiles 标签</span>内。
 
@@ -322,9 +322,9 @@ Maven 下载 jar 包默认访问境外的中央仓库，而国外网站速度很
   </profile>
 ```
 
-### 二、配置环境变量
+## 二、配置环境变量
 
-##### 1、检查 JAVA_HOME 配置是否正确
+### 1、检查 JAVA_HOME 配置是否正确
 
 Maven 是一个用 Java 语言开发的程序，它必须基于 JDK 来运行，需要通过 JAVA_HOME 来找到 JDK 的安装位置。
 
@@ -342,15 +342,15 @@ Java(TM) SE Runtime Environment (build 1.8.0_141-b15)
 Java HotSpot(TM) 64-Bit Server VM (build 25.141-b15, mixed mode)
 ```
 
-##### 2、配置 MAVEN_HOME
+### 2、配置 MAVEN_HOME
 
-![Mave_HOME](Maven-P/Mave_HOME.png)
+![Maven_HOME](Maven-P/Maven_HOME.png)
 
-##### 3、配置PATH
+### 3、配置PATH
 
 ![PATH环境变量](Maven-P/PATH环境变量.png)
 
-##### 4、验证
+### 4、验证
 
 ```bash
 C:\Users\Administrator>mvn -v
@@ -361,19 +361,19 @@ Default locale: zh_CN, platform encoding: GBK
 OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 ```
 
-## Chr 3	使用 Maven：命令行
+# Chr 3	使用 Maven：命令行
 
-### Test  ①	根据坐标创建 Maven 工程
+## Test  ①	根据坐标创建 Maven 工程
 
-##### 1、Maven 核心概念：坐标
+### 1、Maven 核心概念：坐标
 
-###### ①	数学中的坐标
+#### ①	数学中的坐标
 
 ![坐标](Maven-P/坐标.png)
 
 使用 x、y、z 三个『向量』作为空间的坐标系，可以在『空间』中唯一的定位到一个『点』。
 
-###### ②	Maven中的坐标
+#### ②	Maven中的坐标
 
 > 向量说明
 >
@@ -398,7 +398,7 @@ OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 > - artifactId：pro01-atguigu-maven
 > - version：1.0-SNAPSHOT
 
-###### ③	坐标和仓库中 jar 包的存储路径之间的对应关系
+#### ③	坐标和仓库中 jar 包的存储路径之间的对应关系
 
 坐标：
 
@@ -416,9 +416,9 @@ Maven本地仓库根目录\javax\servlet\servlet-api\2.5\servlet-api-2.5.jar
 
 一定要学会根据坐标到本地仓库中找到对应的 jar 包。
 
-##### 2、实验操作
+### 2、实验操作
 
-###### ①	创建目录作为后面操作的工作空间
+#### ①	创建目录作为后面操作的工作空间
 
 其实就是一个普通的目录，在这个目录下我们要去写代码、开发应用程序
 
@@ -432,11 +432,11 @@ Maven本地仓库根目录\javax\servlet\servlet-api\2.5\servlet-api-2.5.jar
 >
 > ★本地工作空间：战场
 
-###### ②	在工作空间目录下打开命令行窗口
+#### ②	在工作空间目录下打开命令行窗口
 
 ![在工作空间目录下打开命令行窗口](Maven-P/在工作空间目录下打开命令行窗口.png)
 
-###### ③	使用命令生成Maven工程
+#### ③	使用命令生成Maven工程
 
 ![使用命令生成Maven工程](Maven-P/使用命令生成Maven工程.png)
 
@@ -458,7 +458,7 @@ Define value for property 'package' com.atguigu.maven: :(直接回车，使用�
 Confirm properties configuration: groupId: com.atguigu.maven artifactId: pro01-maven-java version: 1.0-SNAPSHOT package: com.atguigu.maven Y: :(直接回车，表示确认。如果前面有输入错误，想要重新输入，则输入 N 再回车。)
 ```
 
-###### ④	调整
+#### ④	调整
 
 Maven 默认生成的工程，对 junit 依赖的是较低的 3.8.1 版本，我们可以改成较适合的 4.12 版本。
 
@@ -481,7 +481,7 @@ Maven 默认生成的工程，对 junit 依赖的是较低的 3.8.1 版本，我
 </dependencies>
 ```
 
-###### ⑤	自动生成的 pom.xml 解读
+#### ⑤	自动生成的 pom.xml 解读
 
 ```xml
   <!-- 当前Maven工程的坐标 -->
@@ -519,41 +519,41 @@ Maven 默认生成的工程，对 junit 依赖的是较低的 3.8.1 版本，我
   </dependencies>
 ```
 
-##### 3、Maven核心概念：POM
+### 3、Maven核心概念：POM
 
-###### ①	含义
+#### ①	含义
 
 POM：Project Object Model，项目对象模型。和 POM 类似的是：DOM（Document Object Model），文档对象模型。它们都是模型化思想的具体体现。
 
-###### ②	模型化思想
+#### ②	模型化思想
 
 POM 表示将工程抽象为一个模型，再用程序中的对象来描述这个模型。这样我们就可以用程序来管理项目了。我们在开发过程中，最基本的做法就是将现实生活中的事物抽象为模型，然后封装模型相关的数据作为一个对象，这样就可以在程序中计算与现实事物相关的数据。
 
-###### ③	对应的配置文件
+#### ③	对应的配置文件
 
 POM 理念集中体现在 Maven 工程根目录下 pom.xml 这个配置文件中。所以这个 pom.xml 配置文件就是 Maven 工程的核心配置文件。其实学习 Maven 就是学这个文件怎么配置，各个配置有什么用。
 
-##### 4、Maven核心概念：约定的目录结构
+### 4、Maven核心概念：约定的目录结构
 
-###### ①	各个目录的作用
+#### ①	各个目录的作用
 
 ![各个目录的作用](Maven-P/各个目录的作用.png)
 
 另外还有一个 target 目录专门存放构建操作输出的结果。
 
-###### ②	约定目录结构的意义
+#### ②	约定目录结构的意义
 
 Maven 为了让构建过程能够尽可能自动化完成，所以必须约定目录结构的作用。例如：Maven 执行编译操作，必须先去 Java 源程序目录读取 Java 源代码，然后执行编译，最后把编译结果存放在 target 目录。
 
-###### ③	约定大于配置
+#### ③	约定大于配置
 
 Maven 对于目录结构这个问题，没有采用配置的方式，而是基于约定。这样会让我们在开发过程中非常方便。如果每次创建 Maven 工程后，还需要针对各个目录的位置进行详细的配置，那肯定非常麻烦。
 
 目前开发领域的技术发展趋势就是：约定大于配置，配置大于编码。
 
-### Test ②	在 Maven 工程中编写代码
+## Test ②	在 Maven 工程中编写代码
 
-##### 1、主体程序
+### 1、主体程序
 
 ![主体程序目录](Maven-P/主体程序目录.png)
 
@@ -569,7 +569,7 @@ public class Calculator {
 }
 ```
 
-##### 2、测试程序
+### 2、测试程序
 
 ![测试程序目录](Maven-P/测试程序目录.png)
 
@@ -607,9 +607,9 @@ public class CalculatorTest{
 }
 ```
 
-### Test ③ 执行 Maven 的构建命令
+## Test ③ 执行 Maven 的构建命令
 
-##### 1、要求
+### 1、要求
 
 运行 Maven 中的构建相关的命令时，必须进入到 pom.xml 所在的目录。如果没有在 pom.xml 所在的目录运行 Maven 的构建命令，那么会看到的<span style="color:#4662d9; font-weight:bold">错误信息</span>：
 
@@ -617,13 +617,13 @@ public class CalculatorTest{
 
 > mvn -v 命令和构建操作无关，只要正确配置了 PATH，在任何目录下执行都可以。而构建相关的命令要在 pom.xml 所在目录下运行——操作哪个工程，就进入这个工程的 pom.xml 目录。
 
-##### 2、清理操作
+### 2、清理操作
 
 > mvn clean
 >
 > 效果：删除 target 目录
 
-##### 3、编译操作
+### 3、编译操作
 
 > 主程序编译：mvn compile
 >
@@ -633,19 +633,19 @@ public class CalculatorTest{
 >
 > 测试程序编译结果存放的目录：target/test-classes
 
-##### 4、测试操作
+### 4、测试操作
 
 > mvn test
 >
 > 测试的报告存放的目录：target/surefire-reports
 
-##### 5、打包操作
+### 5、打包操作
 
 > mvn package
 >
 > 打包的结果——jar 包，存放的目录：target
 
-##### 6、安装操作
+### 6、安装操作
 
 > mvn install
 >
@@ -672,9 +672,9 @@ D:\maven-rep1026\com\atguigu\maven\pro01-maven-java\1.0-SNAPSHOT\pro01-maven-jav
 
 另外，安装操作还会将 pom.xml 文件转换为 XXX.pom 文件一起存入本地仓库。所以我们在 Maven 的本地仓库中想看一个 jar 包原始的 pom.xml 文件时，查看对应 XXX.pom 文件即可，它们是名字发生了改变，本质上是同一个文件。
 
-### Test ④ 创建 Maven 版的 Web 工程
+## Test ④ 创建 Maven 版的 Web 工程
 
-##### 1、说明
+### 1、说明
 
 使用 mvn archetype:generate 命令生成 Web 工程时，需要使用一个专门的 archetype。这个专门生成 Web 工程骨架的 archetype 可以参照官网看到它的用法：
 
@@ -682,7 +682,7 @@ D:\maven-rep1026\com\atguigu\maven\pro01-maven-java\1.0-SNAPSHOT\pro01-maven-jav
 
 参数 archetypeGroupId、archetypeArtifactId、archetypeVersion 用来指定现在使用的 maven-archetype-webapp 的坐标。
 
-##### 2、操作
+### 2、操作
 
 注意：如果在上一个工程的目录下执行 mvn archetype:generate 命令，那么 Maven 会报错：不能在一个非 pom 的工程下再创建其他工程。所以不要再刚才创建的工程里再创建新的工程，请回到工作空间根目录来操作。
 
@@ -699,7 +699,7 @@ Define value for property 'groupId': com.atguigu.maven Define value for property
 Define value for property 'package' com.atguigu.maven: :【直接回车，使用默认值】 Confirm properties configuration: groupId: com.atguigu.maven artifactId: pro02-maven-web version: 1.0-SNAPSHOT package: com.atguigu.maven Y: :【直接回车，表示确认】
 ```
 
-##### 3、生成的pom.xml
+### 3、生成的pom.xml
 
 确认打包的方式是 war 包形式
 
@@ -707,23 +707,23 @@ Define value for property 'package' com.atguigu.maven: :【直接回车，使用
 <packaging>war</packaging>
 ```
 
-##### 4、生成的 Web 工程的目录结构
+### 4、生成的 Web 工程的目录结构
 
 webapp 目录下有 index.jsp
 
 WEB-INF 目录下有 web.xml
 
-##### 5、创建 Servlet
+### 5、创建 Servlet
 
-###### ① 在 main 目录下创建 java 目录
+#### ① 在 main 目录下创建 java 目录
 
 ![](Maven-P/java.png)
 
-###### ②  在 java 目录下创建 Servlet 类所在的包的目录
+#### ②  在 java 目录下创建 Servlet 类所在的包的目录
 
 ![](Maven-P/Servlet.png)
 
-###### ③  在包下创建 Servlet 类
+#### ③  在包下创建 Servlet 类
 
 ```java
 package com.atguigu.maven;
@@ -745,7 +745,7 @@ public class HelloServlet extends HttpServlet{
 }
 ```
 
-###### ④  在 web.xml 中注册 Servlet
+#### ④  在 web.xml 中注册 Servlet
 
 ```xml
   <servlet>
@@ -758,7 +758,7 @@ public class HelloServlet extends HttpServlet{
   </servlet-mapping>
 ```
 
-##### 6、在 index.jsp 页面编写超链接
+### 6、在 index.jsp 页面编写超链接
 
 ```html
 <html>
@@ -769,7 +769,7 @@ public class HelloServlet extends HttpServlet{
 </html>
 ```
 
-##### 7、编译
+### 7、编译
 
 此时直接执行 mvn compile 命令出错：
 
@@ -789,7 +789,7 @@ public class HelloServlet extends HttpServlet{
 
 ![编译](Maven-P/编译.png)
 
-##### 8、配置对 servlet-api.jar 包的依赖
+### 8、配置对 servlet-api.jar 包的依赖
 
 对于不知道详细信息的依赖可以到https://mvnrepository.com/网站查询。使用关键词搜索，然后在搜索结果列表中选择适合的使用。
 
@@ -809,13 +809,13 @@ public class HelloServlet extends HttpServlet{
 
 这样就可以把上面的信息加入 pom.xml。重新执行 mvn compile 命令。
 
-##### 9、将 Web 工程打包为 war 包
+### 9、将 Web 工程打包为 war 包
 
 运行 mvn package 命令，生成 war 包的位置如下图所示：
 
 ![将Web工程打包为war包](Maven-P/将Web工程打包为war包.png)
 
-##### 10、将 war 包部署到 Tomcat 上运行
+### 10、将 war 包部署到 Tomcat 上运行
 
 将 war 包复制到 Tomcat/webapps 目录下
 
@@ -829,13 +829,13 @@ public class HelloServlet extends HttpServlet{
 
 通过浏览器尝试访问：http://localhost:8080/pro02-maven-web/index.jsp
 
-### Test ⑤ 让 Web 工程依赖 Java 工程
+## Test ⑤ 让 Web 工程依赖 Java 工程
 
-##### 1、观念
+### 1、观念
 
 明确一个意识：从来只有 Web 工程依赖 Java 工程，没有反过来 Java 工程依赖 Web 工程。本质上来说，Web 工程依赖的 Java 工程其实就是 Web 工程里导入的 jar 包。最终 Java 工程会变成 jar 包，放在 Web 工程的 WEB-INF/lib 目录下。
 
-##### 2、操作
+### 2、操作
 
 在 pro02-maven-web 工程的 pom.xml 中，找到 dependencies 标签，在 dependencies 标签中做如下配置：
 
@@ -849,11 +849,11 @@ public class HelloServlet extends HttpServlet{
 </dependency>
 ```
 
-##### 3、在 Web 工程中，编写测试代码
+### 3、在 Web 工程中，编写测试代码
 
 证明在Web工程中可以使用Java工程中创建的那个类：Calculator
 
-###### ①  补充创建目录
+#### ①  补充创建目录
 
 > pro02-maven-web\src\test\java\com\atguigu\maven
 
@@ -861,7 +861,7 @@ public class HelloServlet extends HttpServlet{
 >
 > mkdir src\test\java\com\atguigu\maven
 
-###### ②  确认 Web 工程依赖了 junit
+#### ②  确认 Web 工程依赖了 junit
 
 ```xml
 <dependency>
@@ -871,19 +871,19 @@ public class HelloServlet extends HttpServlet{
   <scope>test</scope>
 </dependency>
 ```
-###### ③  创建测试类
+#### ③  创建测试类
 
 > 把 Java 工程的 CalculatorTest.java 类复制到 pro02-maven-wb\src\test\java\com\atguigu\maven 目录下
 
-##### 4、执行Maven命令
+### 4、执行Maven命令
 
-###### ①  测试命令
+#### ①  测试命令
 
 > mvn test
 >
 > 说明：测试操作中会提前自动执行编译操作，测试成功就说明编译也是成功的。
 
-###### ②  打包命令
+#### ②  打包命令
 
 > mvn package
 
@@ -893,7 +893,7 @@ public class HelloServlet extends HttpServlet{
 
 ![打包目录](Maven-P/打包目录.png)
 
-###### ③  查看当前 Web 工程所依赖的 jar 包的列表
+#### ③  查看当前 Web 工程所依赖的 jar 包的列表
 
 mvn dependency:list
 
@@ -911,7 +911,7 @@ groupId:artifactId:打包方式: version:依赖的范围
 
 这样的格式虽然和我们 XML 配置文件中坐标的格式不同，但是本质上还是坐标信息，大家需要能够认识这样的格式，将来从 Maven 命令的日志或错误信息中看到这样格式的信息，就能够识别出来这是坐标。进而根据坐标到Maven 仓库找到对应的jar包，用这样的方式解决我们遇到的报错的情况。
 
-###### ④以树形结构查看当前 Web 工程的依赖信息
+#### ④以树形结构查看当前 Web 工程的依赖信息
 
 mvn dependency:tree
 
@@ -925,29 +925,29 @@ mvn dependency:tree
 
 我们在 pom.xml 中并没有依赖 hamcrest-core，但是它却被加入了我们依赖的列表。原因是：junit 依赖了hamcrest-core，然后基于依赖的传递性，hamcrest-core 被传递到我们的工程了。
 
-### Test ⑥  测试依赖范围
+## Test ⑥  测试依赖范围
 
-##### 1、依赖范围
+### 1、依赖范围
 
 标签的位置：dependencies/dependency/scope
 
 标签的可选值：compile/test/provided/system/runtime/import
 
-###### ①  compile 和 test 对比
+#### ①  compile 和 test 对比
 
 |         | main目录（空间） | test目录（空间） | 开发过程（时间） | 部署到服务器（时间） |
 | :-----: | :--------------: | :--------------: | :--------------: | :------------------: |
 | compile |       有效       |       有效       |       有效       |         有效         |
 |  test   |       无效       |       有效       |       有效       |         无效         |
 
-###### ②  compile 和 provided 对比
+#### ②  compile 和 provided 对比
 
 |          | main目录（空间） | test目录（空间） | 开发过程（时间） | 部署到服务器（时间） |
 | :------: | :--------------: | :--------------: | :--------------: | :------------------: |
 | compile  |       有效       |       有效       |       有效       |         有效         |
 | provided |       有效       |       有效       |       有效       |         无效         |
 
-###### ③  结论
+#### ③  结论
 
 > compile：通常使用的第三方框架的 jar 包这样在项目实际运行时真正要用到的 jar 包都是以 compile 范围进行依赖的。比如 SSM 框架所需 jar 包。
 >
@@ -955,9 +955,9 @@ mvn dependency:tree
 >
 > provided：在开发过程中需要用到的“服务器上的 jar 包”通常以 provided 范围依赖进来。比如 servlet-api、jsp-api。而这个范围的 jar 包之所以不参与部署、不放进 war 包，就是避免和服务器上已有的同类 jar 包产生冲突，同时减轻服务器的负担。说白了就是：“服务器上已经有了，你就别带啦！” 
 
-##### 2、测试
+### 2、测试
 
-###### ①  验证 compile 范围对 main 目录有效
+#### ①  验证 compile 范围对 main 目录有效
 
 > main 目录下的类：HelloServlet 使用 compile 范围导入的依赖：pro01-atguigu-maven
 >
@@ -967,7 +967,7 @@ mvn dependency:tree
 >
 > 验证方式：在 HelloServlet 类中导入 Calculator 类，然后编译就说明有效
 
-###### ②  验证 test 范围对 main 目录无效
+#### ②  验证 test 范围对 main 目录无效
 
 > 测试方式：在主体程序中导入 org.junit.Test 这个注解，然后执行编译。
 >
@@ -993,13 +993,13 @@ public class Calculator {
 [ERROR] /D:/maven-workspace/space201026/pro01-maven-java/src/main/java/com/atguigu/maven/Calculator.java:[3,17] 程序包org.junit不存在
 ```
 
-###### ③  验证 test 和 provided 范围不参与服务器部署
+#### ③  验证 test 和 provided 范围不参与服务器部署
 
 其实就是验证：通过 compile 范围依赖的 jar 包会放入 war 包，通过 test 范围依赖的 jar 包不会放入 war 包。
 
 ![验证test和provided范围不参与服务器部署](Maven-P/验证test和provided范围不参与服务器部署.png)
 
-###### ④  验证 provided 范围对测试程序有效
+#### ④  验证 provided 范围对测试程序有效
 
 测试方式是在 pro02-maven-web 的测试程序中加入 servlet-api.jar 包中的类。
 
@@ -1048,22 +1048,22 @@ public class CalculatorTest{
 
 然后看到编译成功。
 
-### Test ⑦ 测试依赖的传递性
+## Test ⑦ 测试依赖的传递性
 
-##### 1、依赖的传递性
+### 1、依赖的传递性
 
-###### ①  依赖
+#### ①  依赖
 
 A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，A 里面能不能直接使用 C？
 
-###### ②  传递的原则
+#### ②  传递的原则
 
 在 A 依赖 B，B 依赖 C 的前提下，C 是否能够传递到 A，取决于 B 依赖 C 时使用的依赖范围。
 
 - B 依赖 C 时使用 compile 范围：可以传递
 - B 依赖 C 时使用 test 或 provided 范围：不能传递，所以需要这样的 jar 包时，就必须在需要的地方明确配置依赖才可以。
 
-##### 2、使用 compile 范围依赖 spring-core
+### 2、使用 compile 范围依赖 spring-core
 
 测试方式：让 pro01-maven-java 工程依赖 spring-core
 
@@ -1100,7 +1100,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 [INFO] \- commons-logging:commons-logging:jar:1.1.1:compile
 ```
 
-##### 3、验证 test 和 provided 范围不能传递
+### 3、验证 test 和 provided 范围不能传递
 
 从上面的例子已经能够看到，pro01-maven-java 依赖了 junit，但是在 pro02-maven-web 工程中查看依赖树的时候并没有看到 junit。
 
@@ -1127,9 +1127,9 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 [INFO] \- commons-logging:commons-logging:jar:1.1.1:compile
 ```
 
-### Test ⑧ 测试依赖的排除
+## Test ⑧ 测试依赖的排除
 
-##### 1、概念
+### 1、概念
 
 > A 依赖 B，B 依赖 C 而且 C 可以传递到 A 的时候，A 不想要 C，需要在 A 里面把 C 排除掉。而往往这种情况都是为了避免 jar 包之间的冲突。
 >
@@ -1137,7 +1137,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 ![测试依赖的排除](Maven-P/测试依赖的排除.png)
 
-##### 2、配置方式
+### 2、配置方式
 
 ```xml
 <dependency>
@@ -1157,7 +1157,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 </dependency>
 ```
 
-##### 3、测试
+### 3、测试
 
 测试的方式：在 pro02-maven-web 工程中配置对 commons-logging 的排除
 
@@ -1192,9 +1192,9 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 发现在 spring-core 下面就没有 commons-logging 了。
 
-### Test ⑨ 继承
+## Test ⑨ 继承
 
-##### 1、概念
+### 1、概念
 
 > Maven工程之间，A 工程继承 B 工程
 >
@@ -1203,7 +1203,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 >
 > 本质上是 A 工程的 pom.xml 中的配置继承了 B 工程中 pom.xml 的配置。
 
-##### 2、作用
+### 2、作用
 
 > 在父工程中统一管理项目中的依赖信息，具体来说是管理依赖信息的版本。
 >
@@ -1221,7 +1221,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 >
 > 通过在父工程中为整个项目维护依赖信息的组合既保证了整个项目使用规范、准确的 jar 包；又能够将以往的经验沉淀下来，节约时间和精力。
 
-##### 3、举例
+### 3、举例
 
 在一个工程中依赖多个 Spring 的 jar 包
 
@@ -1237,9 +1237,9 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 使用 Spring 时要求所有 Spring 自己的 jar 包版本必须一致。为了能够对这些 jar 包的版本进行统一管理，我们使用继承这个机制，将所有版本信息统一在父工程中进行管理。
 
-##### 4、操作
+### 4、操作
 
-###### ①  创建父工程
+#### ①  创建父工程
 
 创建的过程和前面创建 pro01-maven-java 一样。
 
@@ -1258,7 +1258,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 只有打包方式为 pom 的 Maven 工程能够管理其他 Maven 工程。打包方式为 pom 的 Maven 工程中不写业务代码，它是专门管理其他 Maven 工程的工程。
 
-###### ②  创建模块工程
+#### ②  创建模块工程
 
 模块工程类似于 IDEA 中的 module，所以需要进入 pro03-maven-parent 工程的根目录，然后运行 mvn archetype:generate 命令来创建模块工程。
 
@@ -1266,7 +1266,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 ![创建模块工程](Maven-P/创建模块工程.png)
 
-###### ③  查看被添加新内容的父工程 pom.xml
+#### ③  查看被添加新内容的父工程 pom.xml
 
 下面 modules 和 module 标签是聚合功能的配置
 
@@ -1278,7 +1278,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 </modules>
 ```
 
-###### ④  解读子工程的 pom.xml
+#### ④  解读子工程的 pom.xml
 
 ```xml
 <!-- 使用parent标签指定当前工程的父工程 -->
@@ -1296,7 +1296,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 <!-- <version>1.0-SNAPSHOT</version> -->
 ```
 
-###### ⑤  在父工程中配置依赖的统一管理
+#### ⑤  在父工程中配置依赖的统一管理
 
 ```xml
 <!-- 使用dependencyManagement标签配置对依赖的管理 -->
@@ -1332,7 +1332,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 </dependencyManagement>
 ```
 
-###### ⑥  子工程中引用那些被父工程管理的依赖
+#### ⑥  子工程中引用那些被父工程管理的依赖
 
 关键点：省略版本号
 
@@ -1364,7 +1364,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 </dependencies>
 ```
 
-###### ⑦  在父工程中升级依赖信息的版本
+#### ⑦  在父工程中升级依赖信息的版本
 
 ```xml
 ……
@@ -1386,7 +1386,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 [INFO] org.springframework:spring-expression:jar:4.1.4.RELEASE:compile
 ```
 
-###### ⑧  在父工程中声明自定义属性
+#### ⑧  在父工程中声明自定义属性
 
 ```xml
 <!-- 通过自定义属性，统一指定Spring的版本 -->
@@ -1410,7 +1410,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 真正实现“一处修改，处处生效”。
 
-##### 5、实际意义
+### 5、实际意义
 
 ![父工程](Maven-P/父工程.png)
 
@@ -1418,15 +1418,15 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 如上图所示，公司级的父工程中管理的就是成熟的依赖组合方案，各个新项目、子系统各取所需即可。
 
-### Test ⑩ 聚合
+## Test ⑩ 聚合
 
-##### 1、聚合本身的含义
+### 1、聚合本身的含义
 
 部分组成整体
 
 动画片《战神金刚》中的经典台词：“我来组成头部！我来组成手臂！”就是聚合关系最生动的体现。
 
-##### 2、Maven 中的聚合
+### 2、Maven 中的聚合
 
 > 使用一个“总工程”将各个“模块工程”汇集起来，作为一个整体对应完整的项目。
 >
@@ -1445,7 +1445,7 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 > - 总工程
 > - 模块工程
 
-##### 3、好处
+### 3、好处
 
 一键执行 Maven 命令：很多构建命令都可以在“总工程”中一键执行。
 
@@ -1453,10 +1453,12 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 配置聚合之后，各个模块工程会在总工程中展示一个列表，让项目中的各个模块一目了然。
 
-##### 4、聚合的配置
+### 4、聚合的配置
 
 在总工程中配置 modules 即可：
 
+<details>
+<summary><span style="color:#4662d9; font-weight:bold">点击查看代码</span></summary>
 ```xml
   <modules>  
     <module>pro04-maven-module</module>
@@ -1464,8 +1466,9 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
     <module>pro06-maven-module</module>
   </modules>
 ```
+</details>
 
-##### 5、依赖循环问题
+### 5、依赖循环问题
 
 如果 A 工程依赖 B 工程，B 工程依赖 C 工程，C 工程又反过来依赖 A 工程，那么在执行构建操作时会报下面的错误：
 
