@@ -664,7 +664,7 @@ public class CalculatorTest{
   <version>1.0-SNAPSHOT</version>
 ```
 
-在 Maven 仓库中生成的路径如下：
+在 Maven 仓库中生成的路径如下：（路径与坐标一一对应）
 
 ```bash
 D:\maven-rep1026\com\atguigu\maven\pro01-maven-java\1.0-SNAPSHOT\pro01-maven-java-1.0-SNAPSHOT.jar
@@ -791,7 +791,7 @@ public class HelloServlet extends HttpServlet{
 
 ### 8、配置对 servlet-api.jar 包的依赖
 
-对于不知道详细信息的依赖可以到https://mvnrepository.com/网站查询。使用关键词搜索，然后在搜索结果列表中选择适合的使用。
+对于不知道详细信息的依赖可以到 https://mvnrepository.com/ 网站查询。使用关键词搜索，然后在搜索结果列表中选择适合的使用。
 
 ![配置对Servlet-api包的依赖](Maven-P/配置对Servlet-api包的依赖.png)
 
@@ -799,6 +799,7 @@ public class HelloServlet extends HttpServlet{
 
 ```xml
 <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+<!-- 为了能够正常使用 HttpServlet，需要导入 Servlet-api 依赖-->
 <dependency>
     <groupId>javax.servlet</groupId>
     <artifactId>javax.servlet-api</artifactId>
@@ -846,6 +847,7 @@ public class HelloServlet extends HttpServlet{
   <groupId>com.atguigu.maven</groupId>
   <artifactId>pro01-maven-java</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <scope>compile</scope>  <!-- 默认值 -->
 </dependency>
 ```
 
@@ -895,7 +897,7 @@ public class HelloServlet extends HttpServlet{
 
 #### ③  查看当前 Web 工程所依赖的 jar 包的列表
 
-mvn dependency:list
+> mvn dependency:list  (列表)
 
 ```bash
 [INFO] The following files have been resolved:
@@ -913,7 +915,7 @@ groupId:artifactId:打包方式: version:依赖的范围
 
 #### ④以树形结构查看当前 Web 工程的依赖信息
 
-mvn dependency:tree
+> mvn dependency:tree  (树形)
 
 ```bash
 [INFO] com.atguigu.maven:pro02-maven-web:war:1.0-SNAPSHOT
@@ -929,31 +931,25 @@ mvn dependency:tree
 
 ### 1、依赖范围
 
-标签的位置：dependencies/dependency/scope
+标签的位置：dependencies/dependency/<span style="color:#4662d9; font-weight:bold">scope</span>
 
-标签的可选值：compile/test/provided/system/runtime/import
+标签的可选值：<span style="color:#4662d9; font-weight:bold">compile</span>/<span style="color:#4662d9; font-weight:bold">test</span>/<span style="color:#4662d9; font-weight:bold">provided</span>/system/runtime/<span style="color:red; font-weight:bold">import</span>
 
-#### ①  compile 和 test 对比
-
-|         | main目录（空间） | test目录（空间） | 开发过程（时间） | 部署到服务器（时间） |
-| :-----: | :--------------: | :--------------: | :--------------: | :------------------: |
-| compile |       有效       |       有效       |       有效       |         有效         |
-|  test   |       无效       |       有效       |       有效       |         无效         |
-
-#### ②  compile 和 provided 对比
+#### ①  compile 、 test 和 provided对比
 
 |          | main目录（空间） | test目录（空间） | 开发过程（时间） | 部署到服务器（时间） |
 | :------: | :--------------: | :--------------: | :--------------: | :------------------: |
 | compile  |       有效       |       有效       |       有效       |         有效         |
+|   test   |       无效       |       有效       |       有效       |         无效         |
 | provided |       有效       |       有效       |       有效       |         无效         |
 
-#### ③  结论
+#### ②  结论
 
 > compile：通常使用的第三方框架的 jar 包这样在项目实际运行时真正要用到的 jar 包都是以 compile 范围进行依赖的。比如 SSM 框架所需 jar 包。
 >
 > test：测试过程中使用的 jar 包，以 test 范围依赖进来。比如 junit。
 >
-> provided：在开发过程中需要用到的“服务器上的 jar 包”通常以 provided 范围依赖进来。比如 servlet-api、jsp-api。而这个范围的 jar 包之所以不参与部署、不放进 war 包，就是避免和服务器上已有的同类 jar 包产生冲突，同时减轻服务器的负担。说白了就是：“服务器上已经有了，你就别带啦！” 
+> provided：在开发过程中需要用到的“服务器上的 jar 包”通常以 provided 范围依赖进来。比如 servlet-api、jsp-api。而这个范围的 jar 包之所以不参与部署、不放进 war 包，就是避免和服务器上已有的同类 jar 包产生冲突，同时减轻服务器的负担。说白了就是：“<span style="color:red; font-weight:bold">服务器上已经有了，你就别带啦！</span>” 
 
 ### 2、测试
 
@@ -1044,7 +1040,7 @@ public class CalculatorTest{
 }
 ```
 
-然后运行 Maven 的编译命令：mvn compile
+然后运行 Maven 的编译命令：<span style="color:#4662d9; font-weight:bold">mvn compile</span>
 
 然后看到编译成功。
 
@@ -1474,3 +1470,4 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 这个错误的含义是：循环引用。
 
+第四章 使用Maven：IDEA
