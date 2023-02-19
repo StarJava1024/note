@@ -1390,21 +1390,24 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   
   <!-- 自定义标签，维护Spring版本数据 -->
+  <!-- 引用方式：${atguigu.spring.version} -->
   <atguigu.spring.version>4.3.6.RELEASE</atguigu.spring.version>
 </properties>
 ```
 
-在需要的地方使用${}的形式来引用自定义的属性名：
+在需要的地方使用<span style="color:#4662d9; font-weight:bold">${ }</span>的形式来引用自定义的属性名：
 
 ```xml
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-core</artifactId>
+        <!-- 通过引用属性表达式设定版本号，这样版本号就成了一个动态值。 -->
+        <!-- 通过属性个名解析后才知道具体是什么值。 -->
         <version>${atguigu.spring.version}</version>
       </dependency>
 ```
 
-真正实现“一处修改，处处生效”。
+真正实现<span style="color:red; font-weight:bold">“一处修改，处处生效”</span>。
 
 ### 5、实际意义
 
