@@ -1473,3 +1473,231 @@ A 依赖 B，B 依赖 C，那么在 A 没有配置对 C 的依赖的情况下，
 
 这个错误的含义是：循环引用。
 
+# Chr 4 其他核心概念
+
+### 1、生命周期
+
+#### ①  作用
+
+为了让构建过程自动化完成，Maven设定了三个生命周期中的每一环节对应构建过程中的一个操作。
+
+#### ②  三个生命周期
+
+| 生命周期名称 | 作用         | 各个环节                                                     |
+| ------------ | ------------ | ------------------------------------------------------------ |
+| Clean        | 清理操作相关 | pre-clean<br />clean<br />post-clean                         |
+| Site         | 生成站点相关 | pre-site：生成站点之前<br />site：生成站点<br />post-site：生成站点之后<br />deploy-site：部署站点 |
+| Default      | 主要构建过程 | validate：检查各个地方语法是否正确<br />generate-sources：生成自己写源码（读取）<br />process-sources：生成自己写源码（处理）<br />generate-resources：resources配置文件<br />process-resources：复制并处理资源文件，至目标目录，准备打包<br />compile：编译项目 main 目录下的源代码<br />process-classes<br />generate-test-sources<br />process-test-sources<br />generate-test-resources<br />process-test-resources：复制并处理资源文件，至目标测试目录。<br />test-compile：编译测试源代码。<br />process-test-classes<br />test：使用合适的单元测试框架运行测试。这些测试代码不会被打包或部署。<br />prepare-package：准备打包<br />package 接受编译好的代码，打包成可发布的格式，如JAR。<br />pre-integration-test  <br />integration-test  <br />post-integration-test  <br />verify  <br />install  将包安装至本地仓库，以让其它项目依赖。<br />deploy  将最终的包复制到远程的仓库，以让其它开发人员共享；或者部署到服务器上运行（需借助插件，例如：cargo）。 |
+
+#### ③  特点
+
+- 前面三个生命周期彼此是独立的。
+- 在任何一个生命周期内部，执行任何一个具体环节的操作，都是从本周期最初的位置开始执行，直到指定的地方。（本节记住这句话就行了，其他的都不需要记）
+
+Maven 之所以这么设计其实就是为了提高构建过程的自动化程度：让使用者只关心最终要干的即可，过程中的各个环节是自动执行的。
+
+### 2、插件和目标
+
+#### ①  插件
+
+Maven 的核心程序仅仅负责宏观调度，不做具体工作。具体工作都是由 Maven 插件完成的。例如：编译就是由 maven-compiler-plugin-3.1.jar 插件来执行的。
+
+#### ②目标
+
+一个插件可以对应多个目标，而每一个目标都和生命周期中的某一个环节对应。  
+
+Default 生命周期中有 compile 和 test-compile 两个和编译相关的环节，这两个环节对应 compile 和 test-compile 两个目标，而这两个目标都是由 maven-compiler-plugin-3.1.jar 插件来执行的。
+
+### 3、仓库
+
+- 本地仓库：在当前电脑上，为电脑上所有 Maven 工程服务
+- 远程仓库：需要联网
+    - 局域网：我们自己搭建的 Maven 私服，例如使用 Nexus 技术。
+    - Internet
+        - 中央仓库
+        - 镜像仓库：内容和中央仓库保持一致，但是能够分担中央仓库的负载，同时让用户能够就近访问提高下载速度，例如：Nexus aliyun
+
+建议：不要中央仓库和阿里云镜像混用，否则 jar 包来源不纯，彼此冲突。  
+
+专门搜索 Maven 依赖信息的网站：[https://mvnrepository.com/](https://mvnrepository.com/)
+
+# Chr 5 单一架构案例
+
+## 5.1 创建工程，引入依赖
+
+### 1、架构
+
+#### （1） 架构的概念
+
+架构：其实就是项目的结构，只是因为架构是一个更大的词，通常用来形容大规模事务的结构。
+
+#### （2） 单一架构
+
+单一架构也叫（all-in-one）结构，就是所有代码、配置文件、各种资源都在同一工程。
+
+- 一个项目包含义个工程
+- 导出一个 war 包
+- 放在一个 Tomcat 上运行
+
+### 2、创建工程
+
+### 3、引入依赖
+
+#### （1） 搜索依赖信息的网站
+
+##### ① 到哪儿找？
+
+该网站 https://mvnrepository.com/ 
+
+##### ② 怎么选择？
+
+- 确定技术选型：确定我们项目中要使用那些技术
+
+- 到 mvnrepository 网站搜索具体技术对应的具体依赖信息
+
+![mysql-connector-java](Maven-P/mysql-connector-java.png)
+
+- 确定这个技术使用哪个版本的依赖
+    - 考虑因素1：看是否有别的技术要求这里必须用某一个版本
+    - 考虑因素2：如果没有硬性要求，那么选择较高版本或下载量大的版本
+
+![mysql版本](Maven-P/mysql版本.png)
+
+![mysql_maven](Maven-P/mysql_maven.png)
+
+- 在实际使用中检验所有依赖信息是否都正常可用
+
+> 确定技术选型、组件依赖列表、项目划分模块……这些操作其实都属于<span style="color:#4662d9; font-weight:bold">架构设计</span>的范畴。
+>
+> - 项目本身所属于行业的基本特点
+> - 项目基本的功能需求
+> - 项目预计访问压力程度
+> - 项目预计将来需要扩展的功能
+> - 设计项目总体的体系结构
+
+#### （2）持久化层所需依赖
+
+> mysql-connector-java
+>
+> com.alibaba:druid:1.2.8
+>
+> commons-dbutils:commons-dbutils:1.6
+
+#### （3）表述层所需依赖
+
+> javax.servlet:javax.servlet-api:3.1.0
+>
+> org.thymeleaf:thymeleaf:3.0.11.RELEASE
+
+#### （4）辅助功能所需依赖
+
+> junit:junit:4.12
+>
+> ch.qos.logback:logback-classic:1.2.3
+
+#### （5）最终完整依赖信息
+
+```xml
+<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.47</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid</artifactId>
+    <version>1.2.8</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/commons-dbutils/commons-dbutils -->
+<dependency>
+    <groupId>commons-dbutils</groupId>
+    <artifactId>commons-dbutils</artifactId>
+    <version>1.6</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>3.1.0</version>
+    <scope>provided</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf -->
+<dependency>
+    <groupId>org.thymeleaf</groupId>
+    <artifactId>thymeleaf</artifactId>
+    <version>3.0.11.RELEASE</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/junit/junit -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+    <scope>test</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.2.3</version>
+    <scope>test</scope>
+</dependency>
+```
+
+### 4、建包
+
+|       package       |       package名称       |
+| :-----------------: | :---------------------: |
+|        主包         |        com.xing         |
+|    子包[实体类]     |     com.xing.entity     |
+|  子包[Servlet基类]  |  com.xing.servlet.base  |
+|  子包[Servlet模块]  | com.xing.servlet.module |
+|  子包[Servlet接口]  |  com.xing.servlet.api   |
+| 子包[Servlet实现类] |  com.xing.servlet.impl  |
+|    子包[Dao接口]    |    com.xing.dao.api     |
+|   子包[Dao实现类]   |    com.xing.dao.impl    |
+|    子包[过滤类]     |     com.xing.filter     |
+|    子包[异常类]     |   com.xing.exception    |
+|    子包[工具类]     |      com.xing.util      |
+|    子包[测试类]     |      com.xing.test      |
+
+
+
+## 5.2 搭建环境：持久化层
+
+http://heavy_code_industry.gitee.io/code_heavy_industry/pro002-maven/ 
+
+## 5.3 搭建环境：事务控制
+
+
+
+## 5.4 搭建环境：表述层
+
+
+
+## 5.5 搭建环境：辅助功能
+
+
+
+## 5.6 业务功能：登录
+
+
+
+## 5.7 业务功能：显示奏折列表
+
+
+
+## 5.8 业务功能：显示奏折详情
+
+
+
+## 5.9 业务功能：批复奏折
+
+
+
+## 5.10 业务功能：登录检查
+
+
+
+## 5.11 打包部署
