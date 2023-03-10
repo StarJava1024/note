@@ -24,9 +24,9 @@ Objects，普通的Java对象）映射成数据库中的记录
 
 MyBatis下载地址：https://github.com/mybatis/mybatis-3
 
-![1](img\1.png)
+![1](img/1.png)
 
-![2](img\2.png)
+![2](img/2.png)
 
 ### 1.4、和其它持久化层技术对比
 
@@ -1393,11 +1393,11 @@ xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
 
 ### ④执行MBG插件的generate目标
 
-![3](img\3.png)
+![3](img/3.png)
 
 ### ⑤效果
 
-![4](img\4.png)
+![4](img/4.png)
 
 ## 11.2、QBC查询
 

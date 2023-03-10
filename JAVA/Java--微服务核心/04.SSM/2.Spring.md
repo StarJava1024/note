@@ -126,7 +126,7 @@ ApplicationContext 而不是底层的 BeanFactory。
 
 #### ③ApplicationContext的主要实现类
 
-![5](img\5.png)
+![5](img/5.png)
 
 | **类型名**                      | **简介**                                                     |
 | ------------------------------- | ------------------------------------------------------------ |
@@ -161,7 +161,7 @@ ApplicationContext 而不是底层的 BeanFactory。
 </dependencies>
 ```
 
-![6](img\6.png)
+![6](img/6.png)
 
 #### ③创建类HelloWorld
 
@@ -173,9 +173,9 @@ public class HelloWorld {
 }
 ```
 
-![7](img\7.png)
+![7](img/7.png)
 
-![8](img\8.png)
+![8](img/8.png)
 
 #### ⑤在Spring的配置文件中配置bean
 
@@ -203,7 +203,7 @@ public void testHelloWorld(){
 
 #### ⑦思路
 
-![9](img\9.png)
+![9](img/9.png)
 
 #### ⑧注意
 
@@ -831,7 +831,7 @@ public void setTeacherMap(Map<String, Teacher> teacherMap) {
 
 #### ②创建外部属性文件
 
-![10](img\10.png)
+![10](img/10.png)
 
 ```properties
 jdbc.user=root
@@ -1428,7 +1428,7 @@ public void testAutoWireByXML(){
 
 举例：元旦联欢会要布置教室，蓝色的地方贴上元旦快乐四个字，红色的地方贴上拉花，黄色的地方贴上气球。
 
-![11](img\11.png)
+![11](img/11.png)
 
 班长做了所有标记，同学们来完成具体工作。墙上的标记相当于我们在代码中使用的注解，后面同学们做的工作，相当于框架的具体操作。
 
@@ -1458,7 +1458,7 @@ Spring 为了知道程序员在哪些地方标记了什么注解，就需要通�
 
 #### ④创建Spring配置文件
 
-![12](img\12.png)
+![12](img/12.png)
 
 #### ⑤标识组件的常用注解
 
@@ -1468,7 +1468,7 @@ Spring 为了知道程序员在哪些地方标记了什么注解，就需要通�
 
 问：以上四个注解有什么关系和区别？
 
-![13](img\13.png)
+![13](img/13.png)
 
 通过查看源码我们得知，@Controller、@Service、@Repository这三个注解只是在@Component注解的基础上起了三个新的名字。
 
@@ -1685,7 +1685,7 @@ public class UserController {
 
 #### ④@Autowired工作流程
 
-![14](img\14.png)
+![14](img/14.png)
 
 - 首先根据所需要的组件类型到IOC容器中查找
   - 能够找到唯一的bean：直接执行装配
@@ -1739,7 +1739,7 @@ public interface Calculator {
 
 ### 3.1.2、创建实现类
 
-![15](img\15.png)
+![15](img/15.png)
 
 ```java
 public class CalculatorPureImpl implements Calculator {
@@ -1772,7 +1772,7 @@ public class CalculatorPureImpl implements Calculator {
 
 ### 3.1.3、创建带日志功能的实现类
 
-![16](img\16.png)
+![16](img/16.png)
 
 ```java
 public class CalculatorLogImpl implements Calculator {
@@ -1836,11 +1836,11 @@ public class CalculatorLogImpl implements Calculator {
 
 二十三种设计模式中的一种，属于结构型模式。它的作用就是通过提供一个代理类，让我们在调用目标方法的时候，不再是直接对目标方法进行调用，而是通过代理类**间接**调用。让不属于目标方法核心逻辑的代码从目标方法中剥离出来——**解耦**。调用目标方法时先调用代理对象的方法，减少对目标方法的调用和打扰，同时让附加功能能够集中在一起也有利于统一维护。
 
-![17](img\17.png)
+![17](img/17.png)
 
 使用代理后：
 
-![18](img\18.png)
+![18](img/18.png)
 
 #### ②生活中的代理
 
@@ -1888,7 +1888,7 @@ public class CalculatorStaticProxy implements Calculator {
 
 ### 3.2.3、动态代理
 
-![19](img\19.png)
+![19](img/19.png)
 
 生产代理对象的工厂类：
 
@@ -1960,7 +1960,7 @@ AOP（Aspect Oriented Programming）是一种设计思想，是软件设计领�
 
 从每个方法中抽取出来的同一类非核心业务。在同一个项目中，我们可以使用多个横切关注点对相关方法进行多个不同方面的增强。
 
-这个概念不是语法层面天然存在的，而是根据附加功能的逻辑上的需要：有十个附加功能，就有十个横切关注点。![20](img\20.png)
+这个概念不是语法层面天然存在的，而是根据附加功能的逻辑上的需要：有十个附加功能，就有十个横切关注点。![20](img/20.png)
 
 #### ②通知
 
@@ -1972,11 +1972,11 @@ AOP（Aspect Oriented Programming）是一种设计思想，是软件设计领�
 - 后置通知：在被代理的目标方法**最终结束**后执行（**盖棺定论**）
 - 环绕通知：使用try...catch...finally结构围绕**整个**被代理的目标方法，包括上面四种通知对应的所
 
-有位置![21](img\21.png)
+有位置![21](img/21.png)
 
 #### ③切面
 
-封装通知方法的类。![22](img\22.png)
+封装通知方法的类。![22](img/22.png)
 
 #### ④目标
 
@@ -1992,7 +1992,7 @@ AOP（Aspect Oriented Programming）是一种设计思想，是软件设计领�
 
 把方法排成一排，每一个横切位置看成x轴方向，把方法从上到下执行的顺序看成y轴，x轴和y轴的交叉点就是连接点。
 
-![23](img\23.png)
+![23](img/23.png)
 
 #### ⑦切入点
 
@@ -2018,7 +2018,7 @@ Spring 的 AOP 技术可以通过切入点定位到特定的连接点。
 
 ### 3.4.1、技术说明
 
-![24](img\24.png)
+![24](img/24.png)
 
 - 动态代理（InvocationHandler）：JDK原生的实现方式，需要被代理的目标类必须实现接口。因
 
@@ -2179,7 +2179,7 @@ public void beforeMethod(JoinPoint joinPoint){
 
 #### ①作用
 
-![25](img\25.png)
+![25](img/25.png)
 
 #### ②语法细节
 
@@ -2201,7 +2201,7 @@ public void beforeMethod(JoinPoint joinPoint){
   - 例如：execution(public int *..*Service.*(.., int)) 正确*
   - *例如：execution(* int *..*Service.*(.., int)) 错误
 
-![26](img\26.png)
+![26](img/26.png)
 
 ### 3.4.6、重用切入点表达式
 
@@ -2310,7 +2310,7 @@ public Object aroundMethod(ProceedingJoinPoint joinPoint){
 - @Order(较小的数)：优先级高
 - @Order(较大的数)：优先级低
 
-![27](img\27.png)
+![27](img/27.png)
 
 ## 3.5，基于XML的AOP（了解）
 
@@ -2764,7 +2764,7 @@ public class TxByAnnotationTest {
 
 注意：导入的名称空间需要 **tx** **结尾**的那个。
 
-![28](img\28.png)
+![28](img/28.png)
 
 #### ②添加事务注解
 

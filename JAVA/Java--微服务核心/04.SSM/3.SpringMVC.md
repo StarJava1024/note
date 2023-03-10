@@ -103,7 +103,7 @@ Spring版本：5.3.1
 
 传递性导入。
 
-![29](img\29.png)
+![29](img/29.png)
 
 ## 2.3、配置web.xml
 
@@ -739,7 +739,7 @@ public String testHello(){
 }
 ```
 
-![30](img\30.png)
+![30](img/30.png)
 
 ## 6.2、转发视图
 
@@ -758,7 +758,7 @@ public String testForward(){
 }
 ```
 
-![31](img\31.png)
+![31](img/31.png)
 
 ## 6.3、重定向视图
 
@@ -777,7 +777,7 @@ public String testRedirect(){
 }
 ```
 
-![32](img\32.png)
+![32](img/32.png)
 
 > 注：
 >
@@ -1810,7 +1810,7 @@ RedirectView
 
 DispatcherServlet 本质上是一个 Servlet，所以天然的遵循 Servlet 的生命周期。所以宏观上是 Servlet生命周期来进行调度。
 
-![33](img\33.png)
+![33](img/33.png)
 
 ### ①初始化WebApplicationContext
 
@@ -2165,17 +2165,17 @@ i. 再判断是否配置了mvc:default-servlet-handler
 
 ii. 如果没配置，则控制台报映射查找不到，客户端展示404错误
 
-![34](img\34.png)
+![34](img/34.png)
 
-![35](img\35.png)
+![35](img/35.png)
 
 iii. 如果有配置，则访问目标资源（一般为静态资源，如：JS,CSS,HTML），找不到客户端也会展示404
 
 错误
 
-![36](img\36.png)
+![36](img/36.png)
 
-![37](img\37.png)
+![37](img/37.png)
 
 b) 存在则执行下面的流程
 
