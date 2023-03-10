@@ -600,7 +600,29 @@ public @interface SpringBootApplication{}
 > ④  从META-INF/spring.factories位置来加载一个文件。默认扫描我们当前系统里面所有META-INF/spring.factories位置的文件，spring-boot-autoconfigure-2.3.4.RELEASE.jar包里面也有META-INF/spring.factories
 >      文件里面写死了  spring-boot一启动就要给容器中加载的所有配置类，虽然我们127个场景的所有自动配置启动的时候默认全部加载。xxxAutoConfiguration，按照条件装配规则（@Conditional），最终会按需配置。
 
-修改默认配置
+### 4.2 修改默认配置
+
+```Java
+        @Bean
+		@ConditionalOnBean(MultipartResolver.class)  //容器中有这个类型组件
+		@ConditionalOnMissingBean(name = DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME) //容器中没有这个名字 multipartResolver 的组件
+		public MultipartResolver multipartResolver(MultipartResolver resolver) {
+            //给@Bean标注的方法传入了对象参数，这个参数的值就会从容器中找。
+            //SpringMVC multipartResolver。防止有些用户配置的文件上传解析器不符合规范
+			// Detect if the user has created a MultipartResolver but named it incorrectly
+			return resolver;
+		}
+给容器中加入了文件上传解析器；
+```
+
+SpringBoot默认会在底层配好所有的组件。但是如果用户自己配置了以用户的优先
+
+```Java
+@Bean
+@ConditionalOnMissingBean
+public CharacterEncodingFilter characterEncodingFilter() {
+}
+```
 
 > 总结：
 >
@@ -615,3 +637,18 @@ public @interface SpringBootApplication{}
 
 > **xxxxxAutoConfiguration ---> 组件  ---> xxxxProperties里面拿值  ----> application.properties**
 
+### 4.3、最佳实践
+
+> - 引入场景依赖
+> - - https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-starter
+> - 查看自动配置了哪些（选做）
+> - - 自己分析，引入场景对应的自动配置一般都生效了
+>     - 配置文件中debug=true开启自动配置报告。Negative（不生效）\ Positive（生效）
+> - 是否需要修改
+> - - 参照文档修改配置项
+> - - - https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties
+>         - 自己分析。xxxxProperties绑定了配置文件的哪些。
+> - - 自定义加入或者替换组件
+> - - - @Bean、@Component。。。
+> - - 自定义器  **XXXXXCustomizer**；
+>     - ......
