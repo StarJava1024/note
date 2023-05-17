@@ -21,8 +21,6 @@ mybatis-plus:
       table-prefix: t_
 ```
 
-
-
 ## 2、BaseMapper方法实现
 
 ### 1）查询
