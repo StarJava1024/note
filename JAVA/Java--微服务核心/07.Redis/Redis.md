@@ -152,5 +152,7 @@ OK
 (integer) 8
 > get k1
 "abcdxing"
+
+
 ```
 
