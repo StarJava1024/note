@@ -153,6 +153,9 @@ OK
 > get k1
 "abcdxing"
 
-
+> getset k1 wangxing
+"abcdxing"
+> get k1
+"wangxing"
 ```
 
