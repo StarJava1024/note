@@ -1,4 +1,4 @@
-# [**属性名**MyBatis-Plus](https://baomidou.com/pages/223848/ "MyBatis-Plus")
+# [MyBatis-Plus](https://baomidou.com/pages/223848/ "MyBatis-Plus")
 
 ## 1、配置
 
