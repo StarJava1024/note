@@ -1,4 +1,4 @@
-# redis 学前准备
+# Redis 学前准备
 
 
 
@@ -10,9 +10,9 @@
 
 ## 2、安装Redis
 
-> ①  在 /opt 目录下解压Redis安装包：tar -zxcf redis-7.0.12.tar.gz
+> ①  在 /opt 目录下解压Redis安装包：tar -zxcf redis-7.0.11.tar.gz
 >
-> ②  进入目录：cd redis-7.0.12
+> ②  进入目录：cd redis-7.0.11
 >
 > ③  执行：make & make install
 >
@@ -48,7 +48,7 @@
 >
 > ​			4 添加redis密码                      改为 requirepass 你自己设置的密码
 >
-> ⑦  启动服务：/usr/local/bin目录下运行`redis-server`，启用/myredis目录下的redis.conf文件
+> ⑦  启动服务：`/usr/local/bin`目录下运行`redis-server`，启用`/myredis`目录下的`redis7.conf`文件
 >
 > ⑧  连接服务：redis-cli -a 111111 -p 6379 		Redis端口为6379
 >
@@ -63,7 +63,7 @@
 >
 > ​		删除`/usr/local/lib`目录下与redis相关的文件
 
-# redis数据类型
+# Redis 数据类型
 
 ## 1、redis键（key）
 
@@ -927,7 +927,9 @@ wx4t85y1kt0
 > (integer) 2
 > ```
 
-> 我
+> XTRIM: 用于对Stream的长度行进行截取，如超长会进行截取
+> ​		MAXLEN: 允许的最大长度，对流进行修剪限制长度
+> ​		MINID: 允许的最小id，从某个id值小的将会抛弃
 >
 > ```
 > > xadd mystream * k1 v1
@@ -996,17 +998,553 @@ wx4t85y1kt0
 >       2) "v6"
 > ```
 >
+> XREAD: 用于获取消息（阻塞/非阻塞），只会返回大于指定ID的消息
+>
+> XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key...] ID [ID...]
+> ​		COUNT: 最多读取多少条消息
+> ​		BLOCK是否已阻塞的方式读取消息，默认不阻塞，如果milliseconds设置为0，表示永远阻塞
+>
+> 非阻塞：
+>
+> ​		$代表特殊ID，表示以当前Stream已经存储的最大的ID作为最后一个ID，当前Stream中不存在大于当前最大ID的消息，因此此时返回nil
+> ​		0-0代表从最小的ID开始获取Stream中的消息，当不指定count，将会返回Stream中的所有消息，注意也可以使用0（00/000也都是可以的……）
+>
+> ```
+> > XREAD count 2 streams mystream 000	{指定count=2就返回2个stream}
+> 1) 1) "mystream"
+>    2) 1) 1) "1684562045876-0"
+>          2) 1) "k2"
+>             2) "v2"
+>       2) 1) "1684562049694-0"
+>          2) 1) "k3"
+>             2) "v3"
+> > XREAD streams mystream 0-0	{不指定count就返回所有stream}
+> 1) 1) "mystream"
+>    2) 1) 1) "1684562045876-0"
+>          2) 1) "k2"
+>             2) "v2"
+>       2) 1) "1684562049694-0"
+>          2) 1) "k3"
+>             2) "v3"
+>       3) 1) "1684562054396-0"
+>          2) 1) "k4"
+>             2) "v4"
+>       4) 1) "1684562058352-0"
+>          2) 1) "k5"
+>             2) "v5"
+>       5) 1) "1684562061854-0"
+>          2) 1) "k6"
+>             2) "v6"
+> ```
+>
+> 阻塞：
+>
+> ```
+> > xread count 1 block 0 streams mystream $	{阻塞1个流}
+> 1) 1) "mystream"				{,当新建之后，输出刚新建的流}
+>    2) 1) 1) "1684806573840-0"
+>          2) 1) "k7"
+>             2) "v7"
+>             3) "k8"
+>             4) "v8"
+> (50.07s)
 > 
-
-
-
-
+> > xadd mystream * k7 v7 k8 v8	{新增流}
+> "1684806573840-0"
+> ```
+>
 
 #### 消费组相关指令
 
+> XGROUP CREATE: 用于创建消费组
+>
+> XGROUP CREATE key groupname id|$ [MKSTREAM] [ENTRIESREAD entries_read]
+>
+> $表示从Stream尾部开始消费；0表示从Stream头部开始消费；
+>
+> 创建消费者组的时候必须指定 ID，ID为0表示从头开始消费，为$表示只消费新的消息，<span style="color:red; font-weight:bold">队尾新来</span> 
+>
+> ```
+> ========准备工作========
+> > xadd mystream * k1 v1
+> "1684819899589-0"
+> > xadd mystream * k2 v2
+> "1684819905723-0"
+> > xadd mystream * k3 v3
+> "1684819911311-0"
+> > xadd mystream * k4 v4 k5 v5
+> "1684819923515-0"
+> > xrange mystream - +
+> 1) 1) "1684819899589-0"
+>    2) 1) "k1"
+>       2) "v1"
+> 2) 1) "1684819905723-0"
+>    2) 1) "k2"
+>       2) "v2"
+> 3) 1) "1684819911311-0"
+>    2) 1) "k3"
+>       2) "v3"
+> 4) 1) "1684819923515-0"
+>    2) 1) "k4"
+>       2) "v4"
+>       3) "k5"
+>       4) "v5"
+> 
+> > xgroup create mystream groupA $	{$表示从Stream尾部开始消费}
+> OK
+> > xgroup create mystream groupB 0	{0表示从Stream头部开始消费}
+> OK
+> ```
+>
+> 
 
+> xreadgroup group: ">"，表示从第一条尚未被消息的消息开始读取
+>
+> ![](images/9.1.png)
+>
+> ![](images/9.2.png)
+>
+> 让组内的多个消费者共同分担读取消息，所以，我们通常会让每个消费者读取部分消息，从而实现消息读取负载在多个消费者间是均衡分布的
+>
+> ![](images/9.3.png)
+>
+> 
+
+##### 重点问题
+
+| 问题1 | 基于Stream实现的消息队列，如何保证消费者在发生故障或宕机再次重启后，仍然可以读取未处理完的消息？ |
+| ----- | ------------------------------------------------------------ |
+| 问题2 | Streams 会自动使用内部队列（也称为 PENDING List）留存消费组里每个消费者读取的消息保底措施，直到消费者使用 XACK 命令通知 Streams“消息已经处理完成”。 |
+| 问题3 | 消费确认增加了消息的可靠性，一般在业务处理完成之后，需要执行 XACK 命令确认消息已经被消费完成 |
+
+![](images/9.4.png)
+
+> XPENDING: 
+>
+> ​		查询每个消费组内所有消费组「<span style="color:#4662d9; font-weight:bold">已读取、但尚未确认</span>」的消息
+>
+> ![](images/9.5.png)
+>
+> ​		查看某个消费者具体读取了哪些数据
+>
+> ![](images/9.6.png)
+>
+> 下面抓图所示：consumer2已读取的消息的 ID是1659430293537-0一旦消息1659430293537-0被consumer2处理了consumer2就可以使用 XACK 命令通知 Streams，然后这条消息就会被删除
+>
+> ![](images/9.7.png)
+
+> XACK: 向消息队列确认消息处理已完成
+>
+> ![](images/9.8.png)
+>
+> ![](images/9.9.png)
+
+#### XINFO: 用于打印Stream\Consumer\Group的详细消息
+
+![](images/9.10.png)
 
 ### （10）位域（bitfield）
+
+#### 是什么
+
+![](images/10.png)
+
+#### 能干什么
+
+![](images/10.1.png)
+
+> hello 等价于 0110100001100101011011000110110001101111		{二进制形式}
+>
+> 将一个Redis字符串看作是<span style="color:#4662d9; font-weight:bold">一个由二进制位组成的数组</span>，并能对变长位宽和任意没有字节对齐的指定整型位域进行寻址和修改
+
+#### 命令基本语法
+
+> BITFIELD key [GET type offset] [SET type offset value] [INCRBY type offset increment] [OVERFLOW WRAP|SAT|FAIL]
+>
+> ![](images/10.2.png)
+
+#### 案例
+
+> BITFIELD key [GET type offset]
+>
+> ​	GET <type> <offset> 返回指定的位域
+>
+> ```
+> > set fieldkey hello
+> OK
+> > BITFIELD fieldkey get i8 0
+> 1) (integer) 104
+> > BITFIELD fieldkey get i8 8
+> 1) (integer) 101
+> > BITFIELD fieldkey get i8 16
+> 1) (integer) 108
+> > BITFIELD fieldkey get i8 24
+> 1) (integer) 108
+> > BITFIELD fieldkey get i8 32
+> 1) (integer) 111
+> ```
+>
+> | 字母 | 数值 | 二进制（高位<-低位） |
+> | :--: | :--: | :------------------: |
+> |  h   | 104  |      0110 1000       |
+> |  e   | 101  |      0110 0101       |
+> |  l   | 108  |      0110 1100       |
+> |  l   | 108  |      0110 1100       |
+> |  o   | 111  |      0110 1111       |
+
+> BITFIELD key [SET type offset value]
+>
+> ​	SET <type> <offset> <value> 设置指定位域的值并返回它的原值
+>
+> ```
+> > BITFIELD fieldkey set i8 8 120	{120为x的二进制的编码值}
+> 1) (integer) 101
+> > get fieldkey
+> "hxllo"
+> ```
+>
+> 
+
+> BITFIELD key [INCRBY type offset increment]
+>
+> ​		INCRBY <type> <offset> <increment> 从第`offset+1`个位开始，对接下来的`4位` `无符号数` `+increment` 
+>
+> ```
+> > BITFIELD fieldkey incrby u4 3 1	{默认overflow为wrap，即循环溢出}
+> 1) (integer) 5
+> > BITFIELD fieldkey incrby u4 3 1
+> 1) (integer) 6
+> > BITFIELD fieldkey incrby u4 3 1
+> 1) (integer) 7
+> ......
+> > BITFIELD fieldkey incrby u4 3 1
+> 1) (integer) 14
+> > BITFIELD fieldkey incrby u4 3 1
+> 1) (integer) 15
+> > BITFIELD fieldkey incrby u4 3 1
+> 1) (integer) 0
+> ```
+>
+> ```
+> > set test a
+> OK
+> 127.0.0.1:6379> BITFIELD test get i8 0
+> 1) (integer) 97
+> > BITFIELD test set i8 0 126
+> 1) (integer) 97
+> > BITFIELD test get i8 0
+> 1) (integer) 126
+> > get test
+> "~"
+> ```
+
+> BITFIELD key [OVERFLOW WRAP|SAT|FAIL]
+>
+> ​		WRAR: 使用回绕（wrap around）方法处理有符号整数和无符号整数的溢出情况
+>
+> ​		SAT: 使用饱和计算方法处理溢出，下溢计算的结果为最下的整数值（-128），而上溢计算的结果为最大的整数值（127）
+>
+> ​		FALIL: 命令将拒绝执行那些会导致上溢或者下溢情况出现的计算，	并向用户返回空值表示计算未被执行
+>
+> ```
+> > BITFIELD test get i8 0
+> 1) (integer) 126
+> > BITFIELD test set i8 0 258
+> 1) (integer) 126
+> > BITFIELD test get i8 0
+> 1) (integer) 2
+> > BITFIELD test overflow sat set i8 0 128
+> 1) (integer) 2
+> > BITFIELD test get i8 0
+> 1) (integer) 127		{最大为127，最小为-128}
+> > BITFIELD test overflow fail set i8 0 128
+> 1) (nil)
+> ```
+
+# Redis 持久化
+
+## RDB
+
+### 是什么
+
+> 在指定的时间间隔，执行数据集的时间点快照
+
+### 能干啥
+
+> 在指定的时间间隔内将内存中的数据集快照写入磁盘，也就是行话讲的Snapshot内存快照，它恢复时再将硬盘快照文件直接读回到内存里
+
+### 案例演示
+
+#### 需求说明：RDB保存到磁盘的文件叫<span style="color:#4662d9; font-weight:bold">dump.rdb</span> 
+
+![持久化-1](images/持久化-1.png)
+
+#### 配置文件
+
+Redis 6.0.16 以下
+
+![持久化-2](images/持久化-2.png)
+
+Redis 6.2 以上Redis-7.0.12
+
+![持久化-3](images/持久化-3.png)
+
+#### 自动触发
+
+##### （1）修改配置
+
+> [root@node2 myredis]# vim redis7.conf
+> 		在`行号439`加上`save 5 2` 	{5秒内2次操作}
+> 		在`行号487`将`dbfilename dump.rdb`修改为`dbfilename dump6379.rdb` 
+> 		在`行号510`将`dir ./`修改为`dir /myredis/dumpfiles` 
+>
+> 修改完之后
+>
+> [root@node2 myredis]# ps -ef|grep redis-server		{查看进程`redis-server`}
+> [root@node2 myredis]# kill -9 2985		{杀掉进程`redis-server`}
+> [root@node2 myredis]# redis-server redis7.conf 		{重启`redis`服务}
+
+#### 手动触发
+
+##### （1）Save
+
+> 在主程序中执行`会阻塞`当前redis服务器，直接持久化工作完成执行save命令期间，Redis不能处理其他命令，线上禁止使用
+
+##### （2）bgsave
+
+> Redis会在后台异步进行快照操作，`不阻塞`快照同时还可以响应客户端请求，该触发方式会fork一个子进程有子进程复制持久化过程
+>
+> fork: 在Linux程序中，fork()会产生一个和父进程完全相同的子进程，但子进程在此后多会exec系统调用，出于效率考虑，尽量避免膨胀。
+
+> lastsave: 可以通过lastsave命令获取最后一次成功执行快照的时间
+>
+> ```
+> > LASTSAVE
+> (integer) 1685061385
+> 
+> [root@node2 dumpfiles]# date -d @1685061385
+> 2023年 05月 26日 星期五 08:36:25 CST
+> ```
+
+#### 优点
+
+> 1、适合大规模的数据恢复
+>
+> 2、按照业务定时备份
+>
+> 3、对数据完成性和一致性要求不高
+>
+> 4、RDB文件在内存的加载速度要比AOF快得多
+
+#### 缺点
+
+> 1、在一定间隔时间做一次备份，所以如果redis以外down掉的话，就会丢失从当前至最近一次快照期间的数据，快照之间的数据会丢失
+>
+> 2、内存数据的全量同步，如果数据量太大会导致I/O严重影响服务器性能
+>
+> 3、RDB依赖于主进程的fork，在更大的数据集中，这可能会导致服务请求的瞬间延迟。fork的时候内存中的数据被克隆了一份，大致2倍的膨胀性，需要考虑
+
+#### 如何检查修复dump.rdb文件
+
+![如何检查修复dump.rdb文件](images/持久化-5.png)
+
+#### 哪些情况会触发RDB快照
+
+> 1、配置文件中默认的快照配置
+>
+> 2、手动save/bgsave命令
+>
+> 3、执行flushall/flushdb命令也会产生dump.rdb文件，但里面是空的，无意义
+>
+> 4、执行shutdown且没有设置开启AOF持久化
+>
+> 5、主从复制时，主节点自动触发
+
+#### 如何禁用快照
+
+> 命令：`redis-cli config set save ""` 
+>
+> 修改配置文件redis7.conf：加上`save ""` 
+
+#### RDB 优化配置项详解
+
+> 配置文件`SNAPSHOTTING`模块：
+>
+> stop-writes-on-bgsave-error: 默认yes
+> 		如果配置成no，表示你不在乎数据不一致或者有其他的手段发现和控制这种不一致，那么在快照写入失败时，也能确保redis继续接受新的写请求
+>
+> rdbcompression: 默认yes
+> 		对于存储到磁盘中的快照，可以设置是否进行压缩存储。如果是的话，redis会采用LZF算法进行压缩。
+> 如果你不想消耗CPU来进行压缩的话，可以设置为关闭次功能
+>
+> rdbchecksum: 默认yes
+> 		在存储快照后，还可以让redis使用CRC64算法来进行数据校验，但是这样做会增加大约10%的性能消耗，如果希望获取到最大的性能提升，可以关闭此功能
+>
+> rdb-del-sync-files: 在没有持久性的情况下删除复制中使用的RDB文件启用。默认情况下no，此选项是禁用的。
+
+### 总结
+
+![RDB小结](images/RDB小结.png)
+
+## AOF
+
+### 是什么
+
+> 以日志的形式类记录每个写操作，将Redis执行过的所有写指令记录下来（读操作不记录），只许追加文件但不可以改写文件，redis启动之初会读取该文件重新构建数据，换言之，redis重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作
+>
+> 默认情况下，redis是没有开启AOF的。
+>
+> 开启AOF功能需要设置配置：appendonly yes
+
+### 工作流程
+
+![AOF-工作流程](images/AOF-工作流程.png)
+
+> 1、Client作为命令的来源，会有多个源头以及源源不断的请求命令。
+>
+> 2、在这些命令到达Redis Server 以后并不是直接写入AOF文件，会将其这些命令先放入AOF缓存中进行保存。这里的AOF缓冲区实际上是内存中的一片区域，存在的目的是当这些命令达到一定量以后再写入磁盘，避免频繁的磁盘IO操作。
+>
+> 3、AOF缓冲会根据AOF缓冲区<span style="color:red; font-weight:bold">同步文件的三种写回策略</span>将命令写入磁盘上的AOF文件。
+>
+> 4、随着写入AOF内容的增加为避免文件膨胀，会根据规则进行命令的合并(又称<span style="color:red; font-weight:bold">AOF重写</span>)，从而起到AOF文件压缩的目的。
+>
+> 5、当Redis Server 服务器重启的时候会从AOF文件载入数据。
+
+### 写回策略
+
+> Always: 同步写回，每个写命令执行完立刻同步地将日志写回磁盘
+>
+> everysec: 每秒写回，每个写命令执行完，只是先把日志写到AOF文件的内存缓冲区，每隔1秒把缓冲区中的内容写入磁盘
+>
+> no: 操作系统控制的写回，每个写命令执行完，只是先把日志写到AOF文件的内存缓冲区，由操作系统决定何时将缓冲区写回磁盘
+
+|  配置项  |      写回时机      | 优点                     | 缺点                             |
+| :------: | :----------------: | ------------------------ | -------------------------------- |
+|  Always  |      同步写回      | 可靠性高，数据基本不丢失 | 每个写命令都要落盘，性能影响较大 |
+| Everysec |      每秒写回      | 性能适中                 | 宕机时丢失1秒内的数据            |
+|    No    | 操作系统控制的写回 | 性能好                   | 宕机时丢失数据较多               |
+
+> 配置文件中`redis7.conf` 
+>
+> 在`1385行`将`appendonly no`修改为`appendonly yes` 
+
+### 优缺点
+
+> 优点：更好的保护数据不丢失、性能搞、可做紧急恢复
+>
+> 缺点：①  相同数据集的数据而言aof文件要远大于rdb文件，恢复速度慢于rdb
+>
+> ​			②  aof运行效率要慢于rdb，每秒同步策略效率较好，不同步效率和rdb相同
+
+### 重写机制
+
+> 自动触发：满足配置文件中的选项后，Redis会记录上次重写时的AOF大小，默认配置是当AOF文件是上次rewrite后大小的一倍且文件大于64M时
+>
+> 手动触发：客户端向服务器发送bgrewriteaof命令
+
+| 配置指令                                                 |          配置含义          | 配置示例                                                     |
+| :------------------------------------------------------- | :------------------------: | ------------------------------------------------------------ |
+| appendonly                                               |        是否开启aof         | appendonly yes                                               |
+| appendfilename                                           |          文件名称          | appendfilename "appendonly.aof"                              |
+| appendfsync                                              |          同步方式          | everysec/always/no                                           |
+| no-appendfsync-on-rewrite                                |    aof重写期间是否同步     | no-appendfsync-on-rewrite no                                 |
+| auto-aof-rewrite-percentage<br>auto-aof-rewrite-min-size | 重写触发配置、文件重写策略 | auto-aof-rewrite-percentage 100<br/>auto-aof-rewrite-min-size 64mb |
+
+### 总结
+
+![AOF总结](images/AOF总结.png)
+
+# Redis 事务
+
+## 是什么
+
+> 可以一次执行多个命令，本质是一组命令的集合。一个事务中的所有命令都会序列化，按顺序地串行化执行而不会被其他命令插入，不许加塞
+
+## 能干啥
+
+> 一个队列中，一次性、顺序性、排他性的执行一系列命令
+
+## Redis 事务
+
+> 1、单独的隔离操作
+>
+> ​		redis的事务仅仅是保证事务里的操作会被连续独占的执行，redis命令执行是单线程架构，在执行事务内所有指令前是不可能再去同时执行其他客户端的请求的
+>
+> 2、没有隔离级别的概念
+>
+> ​		因为事务提交前任何指令都不会被实际执行，也就不存在“事务的查询要看到事务里的更新，在事务外查询不能看到”这种问题了
+>
+> 3、不保证原子性
+>
+> ​		redis的事务不保证原子性，也就是不保证所有指令同时成功或同时失败，只有决定是否执行全部指令的能力，没有执行到一半进行回滚的能力
+>
+> 4、排它性
+>
+> ​		redis会保证一个事务内命令依次执行，而不会被其他命令插入
+
+## 常用命令
+
+> MULTI: 标记一个事务块的开始
+>
+> EXEC: 执行所有事务块的命令
+>
+> DISCARD: 取消事务，放弃执行事务块内的所有命令
+>
+> WATCH: 监控一个（或多个）key，如果在事务执行之前key被其他命令所改动，那么事务被打断
+>
+> UNWATCH: 取消WATCH监控的key
+>
+> 小结：①  一旦执行了exec之前加的监控锁都会被取消掉了
+>
+> ​			②  当客户端连接丢失的时候（比如退出链接），所有东西都会被取消监视
+
+## 总结
+
+>  开启：以MUTL开始一个事务
+>
+> 入队：将多个命令入队到事务中，接到命令并不会立即执行，而是放到等待执行的事务队列里面
+>
+> 执行：由EXEC命令触发事务
+
+# Redis 管道
+
+## 是什么
+
+> 批处理命令变种优化措施，类似Redis的原生批命令（mget和mset）
+
+![Redis管道](images/Redis管道.png)
+
+## 总结
+
+### `Pipeline`与`原生批量命令`对比
+
+> ①  原生批量命令是原子性（例如：mset，mget），`pipeline`是非原子性
+>
+> ②  原生批量命令依次只能执行一种命令，`pipeline`支持批量执行不同命令
+>
+> ③  原生批命令是服务端实现，而`pipeline`需要服务端与客户端共同完成
+
+### `Pipeline`与`事务`对比
+
+> ①  事务具有原子性，管道不具有原子性
+>
+> ②  管道一次性将多条命令发送到服务器，事务是一条一条的发，事务只有在接收到exec命令后才会执行，管道不会
+>
+> ③  执行事务时会阻塞其他命令的执行，而执行管道中的命令时不会
+
+### 使用`Pipeline`<span style="color:red; font-weight:bold">注意事项</span> 
+
+> ① ` pipeline`缓冲的指令只是会依次执行，不保证原子性，如果执行中指令发生异常，将会继续执行后续的指令
+>
+> ②  使用`pipeline`组装的命令个数不能太多，不然数据量过大客户端阻塞的时间可能过久，同时服务器此时也被迫回复一个队列答复，占用很多内存
+
+# Redis 复制（replica）
+
+## 是什么
+
+> 就是主从复制，master以写为主，Slave以读为主
+
+
 
 
 
