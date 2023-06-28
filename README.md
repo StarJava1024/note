@@ -6,7 +6,7 @@
 
 |        | **Gitee**                                                    | **Github**                                                   |
 | ------ | :----------------------------------------------------------- | ------------------------------------------------------------ |
-| 后端   | [https://github.com/youlaitech/youlai-mall(opens new window)](https://github.com/youlaitech/youlai-mall) | [https://github.com/youlaitech/youlai-mall(opens new window)](https://github.com/youlaitech/youlai-mall) |
+| 后端   | [https://gitee.com/youlaitech/youlai-mall(opens new window)](https://github.com/youlaitech/youlai-mall) | [https://github.com/youlaitech/youlai-mall(opens new window)](https://github.com/youlaitech/youlai-mall) |
 | 前端   | [https://gitee.com/youlaiorg/mall-admin-web(opens new window)](https://gitee.com/youlaiorg/mall-admin-web) | [https://github.com/youlaitech/mall-admin-web(opens new window)](https://github.com/youlaitech/mall-admin-web) |
 | 移动端 | [https://gitee.com/youlaiorg/mall-app(opens new window)](https://gitee.com/youlaiorg/mall-app) | https://github.com/youlaitech/mall-app                       |
 
