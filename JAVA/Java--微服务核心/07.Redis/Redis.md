@@ -1,7 +1,5 @@
 # Redis 学前准备
 
-
-
 ## 1、在Linux上安装gcc
 
 > 查看gcc版本：gcc -v
@@ -53,6 +51,8 @@
 > ⑧  连接服务：redis-cli -a 111111 -p 6379 		Redis端口为6379
 >
 > ​							redis-cli -a 111111 --raw			解决中文乱码
+>
+> ​							redis-cli -a 111111 -p 6379 --raw
 >
 > ⑨  关闭服务：单实例关闭：redis-cli -a 111111 shutdown
 > ​						  多实例关闭，指定端口关闭：redis-cli -p 6379 shutdown
@@ -1147,11 +1147,11 @@ wx4t85y1kt0
 
 #### 是什么
 
-![](images/10.png)
+![10](images/10.png)
 
 #### 能干什么
 
-![](images/10.1.png)
+![10.1](images/10.1.png)
 
 > hello 等价于 0110100001100101011011000110110001101111		{二进制形式}
 >
@@ -1542,13 +1542,104 @@ Redis 6.2 以上Redis-7.0.12
 
 ## 是什么
 
-> 就是主从复制，master以写为主，Slave以读为主
+> 官网：https://redis.io/docs/management/replication/ 
+>
+> 就是主从复制，master以写为主，slave以读为主
+
+## 能干什么
+
+> （1）读写分离
+>
+> （2）容灾恢复
+>
+> （3）数据备份
+>
+> （4）水平扩容支撑搞并发
+
+## 怎么玩（配从库不配主库）
+
+### 权限细节，重要
+
+> `master`如果配置了`requirepass`参数，需要密码登陆
+>
+> 那么`slave`就要配置`masterauth`来设置校验密码，否则`master`会拒绝`slave`的访问请求
+
+### 基本操作命令
+
+> info replication：可以查看复制节点的主从关系和配置信息
+>
+> replicaof主库IP主库端口：一般写入进redis.conf配置文件内
+>
+> slaveof主库IP主库端口：每次与master断开之后，都需要重新连接，除非你配置进redis.conf文件
+> ​											 在运行期间修改slave节点的信息，如果该数据已经是某个主数据库的从数据库，那么会停止和原主数据库的同步关系转而和新的主数据库同步，重新拜码头
+>
+> slaveof no one：使当前数据库停止与其他数据库的同步，转成主数据库，$ 自立为王 $ 
+
+## 案例演示
+
+### 架构说明
+
+> 一个master两个slave
+>
+> 拷贝多个redis.conf文件：redis6379.conf	redis6380.conf	reids6381.conf
+
+### 修改配置文件细节操作
+
+> redis6379.conf为例，步骤：
+>
+> （1）开启 daemonize yes
+>
+> （2）注释掉 bind 127.0.0.1
+>
+> （3）protected-mode no
+>
+> （4）指定端口：port 6379
+>
+> （5）指定当前工作目录：dir /myredis
+>
+> （6）pid文件名字：pidfile /var/run/redis_6379.pid
+>
+> （7）log文件名字：logfile "/myredis/6379.log"
+>
+> （8）requirepass：requirepass 111111
+>
+> （9）dump.rdb名字：dbfilename dump6379.rdb
+>
+> （10）aof文件：appendonly yes	appendfilename：appendfilename "appendonly.aof"
+>
+> （11）从机访问主机的通行密码masterauth（<span style="color:red; font-weight:bold">必须</span>）：replicaof 192.168.28.110 6379		masterauth "111111"	(<span style="color:red; font-weight:bold">从机需要配置，主机不用</span>)
+
+### 常用3招
+
+#### （1）一主二仆
+
+#### （2）薪火相传
+
+#### （3）反客为主
+
+------
+
+# SpringBoot 集成 Redis
+
+## 本地Java连接Redis常见问题
+
+> （1）注释 bind 127.0.0.1
+>
+> （2）protected-mode no
+>
+> （3）Linux系统的防火墙设置
+>
+> （4）Redis服务器的IP地址和密码是否正确
+>
+> （5）忘记写访问Redis的服务器口号和auth密码
+
+## 集成RedisTemplate
+
+### 1、连接单机
 
 
 
-
-
-
+### 2、连接集群
 
 
 
