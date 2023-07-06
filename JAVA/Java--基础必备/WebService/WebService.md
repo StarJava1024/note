@@ -70,7 +70,7 @@
 ```Java
 import javax.jws.WebService;
 @WebService
-public interface HelloWorld(){
+public interface HelloWorld {
     public String sayHello(String name, int age);
 }
 ```
@@ -78,7 +78,7 @@ public interface HelloWorld(){
 
 
 ```Java
-public class HelloWorldImpl implements HelloWorld{
+public class HelloWorldImpl implements HelloWorld {
 	@Override
     public String sayHello(String name, int age){
         return "cxf 1002 hello :" + name + "\t" + age;
@@ -90,7 +90,7 @@ public class HelloWorldImpl implements HelloWorld{
 
 ```Java
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
-public class MianServer{
+public class MianServer {
     public static void main(String[] args) {
 		JaxWsServerFactoryBean jaxWsServerFactoryBean = new JaxWsServerFactoryBean();
         jaxWsServerFactoryBean.setAddress("http://localhost:9999/cxf1022_server");
@@ -106,7 +106,7 @@ public class MianServer{
 
 ```Java
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-public class ClientTest{
+public class ClientTest {
     public static void main(String[] args) {
 		JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
         jaxWsProxyFactoryBean.setAddress("http://localhost:9999/cxf1022_server");
@@ -175,7 +175,7 @@ import javax.jws.WebResult;
 import javax.jws.WebParam;
 
 @WebService
-public interface HelloWorld(){
+public interface HelloWorld{
     @WebMethod
     @WebResult(name="sayHelloRetValue")
     public String sayHello(@WebParam(name="userName") String name, @WebParam(name="userAge") int age);
@@ -208,13 +208,89 @@ public interface HelloWorld(){
 
 ![014](images/014.png)
 
+```Java
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+public class JAXBTest {
+    public static void myMarshaller() throws JAXBException {
+        JAXBContext jAXBContext = JAXBContext.newInstance(Book.class);
+        Marshaller marshaller = jAXBContext.createMarshaller();
+        
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, "utf-8");
+        
+        marshaller.marshal(new Book(11, "java", 25.8d), System.out);
+    }
+    
+    public static void main(String[] args) throws JAXBException {
+        myMarshaller();
+    }
+    
+}
+```
+
+![015](images/015.png)
+
+```Java
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+public class JAXBTest {
+    public static void myMarshaller() throws JAXBException {
+        JAXBContext jAXBContext = JAXBContext.newInstance(Book.class);
+        Marshaller marshaller = jAXBContext.createMarshaller();
+        
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, "utf-8");
+        
+        marshaller.marshal(new Book(11, "java", 25.8d), System.out);
+    }
+    
+    public static void myMarshaller() throws JAXBException {
+        String xmlString = "<?xml version=\"1.0\"encoding=\"utf-8\" strandalone=\"yes\"?><book><bookName>java</bookName><id>11</id><price>25.8</price></book>";
+        JAXBContext JAXBContext = JAXBContext.newInstance(Book.class);
+        Unmarshaller unmarshaller = jAXBContext.createUnmarshaller();
+        Book book = (Book) Unmarshaller.Unmarshal(new StringReader(xmlString));
+        System.out.println(book.toString());
+    }
+    
+    public static void main(String[] args) throws JAXBException {
+        myMarshaller();
+    }
+    
+}
+```
+
+![016](images/016.png)
+
 # JAX-WS
+
+## 定义
+
+> JAX-WS规范是一组XML web service 的JavaAPI，它运行实现会将这些API的调用转换成为对应的SOAP消息，是Sun公司提出的一套关于WebService的开发标准
+
+## 能干嘛
+
+> JAX-WS 可以完成wsdl到java的转换，即wsdl或合同契约优先
+
+![017](images/017.png)
+
+![018](images/018.png)
+
+![019](images/019.png)
 
 # Spring整合CXF
 
-# Restful Web Service(JAX-RS)
+## 整合步骤
 
-# 总结
+> 1、建工程添jar包改配置，用MyEclipse自带的Spring插件完成构建
+
+![020](images/020.png)
+
+# Restful Web Service(JAX-RS)
 
 
 
