@@ -12,23 +12,23 @@
 
 2、箭头操作符将 Lambda 表达式拆分成两部分：
 
-	* 左侧：Lambda 表达式的参数列表
-	* 右侧：Lambda 表达式中所需执行的功能，即 Lambda 体
+> * 左侧：Lambda 表达式的参数列表
+> * 右侧：Lambda 表达式中所需执行的功能，即 Lambda 体
 
-3、语法格式一：无参数，无返回值
+3、语法格式一：<span style="color:#4662d9; font-weight:bold">无参数，无返回值</span> 
 
 ```Java
 () -> System.out.println("Hello Lambda!");
 ```
 
-4、语法格式二：有一个参数，无返回值
+4、语法格式二：<span style="color:#4662d9; font-weight:bold">有一个参数，无返回值</span> 
 
 ```Java
 x -> System.out.println(x);  // 只有一个参数，小括号可以不写
 (x) -> System.out.println(x);
 ```
 
-5、语法格式三：有两个以上参数，有返回值，并且 Lambda 体中有多条语句
+5、语法格式三：<span style="color:#4662d9; font-weight:bold">有两个以上参数，有返回值，并且 Lambda 体中有多条语句</span> 
 
 ```Java
 Comparator<Integer> com = (x, y) -> {
@@ -37,13 +37,13 @@ Comparator<Integer> com = (x, y) -> {
 };
 ```
 
-6、语法格式四：若 Lambda 表达式体中只有一条语句，return 和 { } 都可以不写
+6、语法格式四：<span style="color:#4662d9; font-weight:bold">若 Lambda 表达式体中只有一条语句，return 和 { } 都可以不写</span> 
 
 ```Java
 Comparator<Integer> com = (x, y) -> Integer.comper(x, y);
 ```
 
-7、语法格式五：Lambda 表达式的参数列表的数据类型可以省略不写，因为JVM编译器通过上下文推断出，数据类型，即"类型推断"
+7、语法格式五：<span style="color:#4662d9; font-weight:bold">Lambda 表达式的参数列表的数据类型可以省略不写，因为JVM编译器通过上下文推断出，数据类型，即"类型推断"</span> 
 
 ```Java
 Comparator<Integer> com = (Integer x, Integer y) -> return Integer.comper(x, y);
@@ -51,17 +51,18 @@ Comparator<Integer> com = (Integer x, Integer y) -> return Integer.comper(x, y);
 
 8、总结
 
-左右遇一括号省，左侧推断类型省
+> 左右遇一括号省，左侧推断类型省
 
 ### 二、Lambda 表达式需要"函数式接口"支持
 
-函数式接口：接口中只有一个抽象方法的接口，称为函数式接口。可以使用注解 @FunctionalInterface 修饰可以检查是否是函数式接口
+> 函数式接口：接口中只有一个抽象方法的接口，称为函数式接口。可以使用注解 @FunctionalInterface 修饰可以检查是否是函数式接口
 
 ### 三、[案例习题](https://www.bilibili.com/video/BV1h54y1z7L4?p=4)
 
 ###### 例1：
 
-①  声明函数式接口，接口中声明抽象方法，public String getValue(String str);
+> ①  声明函数式接口，接口中声明抽象方法，public String getValue(String str);
+>
 
 ```java
 @FunctionalInterface
@@ -70,7 +71,8 @@ public interface MyStr {
 }
 ```
 
-②  声明类 LambdaDome，类中编写方法使用接口作为参数，将一个字符串转换成大写，并作为方法的返回值。
+> ②  声明类 LambdaDome，类中编写方法使用接口作为参数，将一个字符串转换成大写，并作为方法的返回值。
+>
 
 ```Java
 public class LambdaDome {
@@ -115,7 +117,8 @@ testDome1：
 AAA
 ```
 
-③  再将一个字符串的第2个和第4个索引位置进行截取子串
+> ③  再将一个字符串的第2个和第4个索引位置进行截取子串
+>
 
 ```Java
 @Test
@@ -132,9 +135,10 @@ public void testDome4 (){
 
 ###### 例2：
 
-①  声明一个带两个泛型的函数式接口，泛型类型为<T, R> T为参数，R为返回值
-
-②  接口中声明对应抽象方法
+> ①  声明一个带两个泛型的函数式接口，泛型类型为<T, R> T为参数，R为返回值
+>
+> ②  接口中声明对应抽象方法
+>
 
 ```Java
 @FunctionalInterface
@@ -143,9 +147,10 @@ public interface MyMap<T, R> {
 }
 ```
 
-③  在 LambdaDome 类中声明方法，使用接口作为参数，计算两个 long 型参数的和
-
-④再计算两个 long 型参数的乘积
+> ③  在 LambdaDome 类中声明方法，使用接口作为参数，计算两个 long 型参数的和
+>
+> ④再计算两个 long 型参数的乘积
+>
 
 ```Java
 @Test
