@@ -51,7 +51,7 @@ Comparator<Integer> com = (Integer x, Integer y) -> return Integer.comper(x, y);
 
 8、总结
 
-> 左右遇一括号省，左侧推断类型省
+> <span style="color:red; font-weight:bold">左右遇一括号省，左侧推断类型省</span> 
 
 ### 二、Lambda 表达式需要"函数式接口"支持
 
@@ -203,13 +203,13 @@ public void testDemo2 (){
     for(Integer num : numList){
         System.out.println(num);
     }
+    numList.foreach(System.out::println);
 }
 // 产生指定个数的整数，并放入集合中
 public List<Integer> getNumList(int number, Supplier<Integer> supplier){
     List<Integer> list = new ArrayList<>();
     for (int i = 0; i < number; i++){
-        Integer num = supplier.get();
-        list.add(num);
+        list.add(supplier.get());
     }
     return list;
 }
@@ -219,7 +219,7 @@ public List<Integer> getNumList(int number, Supplier<Integer> supplier){
 // Function<T, R> 函数型接口
 @Test
 public void testDome3 (){
-    String string = strHandler("安徽职业技术学院", (str) -> str.substring(4, 6));
+    String string = strHandler("安徽建筑大学", (str) -> str.substring(4, 6));
     System.out.println(string);
 }
 // 用于处理字符串
@@ -266,7 +266,8 @@ public List<String> filterString(List<String> list, Predicate<String> predicate)
 
 ## [方法引用与构造器引用](https://www.bilibili.com/video/BV1h54y1z7L4?p=6)
 
-当要传递给Lambda体的操作，已经有实现的方法了，可以使用方法引用！（实现抽象方法的参数列表，必须与方法引用方法的参数列表保持一致！）方法引用：使用操作符 “::” 将方法名和对象或类的名字分隔开来。如下三种主要使用情况：
+> 当要传递给Lambda体的操作，已经有实现的方法了，可以使用方法引用！（实现抽象方法的参数列表，必须与方法引用方法的参数列表保持一致！）方法引用：使用操作符 “::” 将方法名和对象或类的名字分隔开来。如下三种主要使用情况：
+>
 
 ##### 1、对象::实例方法
 
@@ -278,9 +279,9 @@ public void testDome1 (){
     Consumer<String> con1 = (x) -> ps.print(x);
     con1.accept("安徽");
     Consumer<String> con2 = ps::print;
-    con2.accept("职业技术");
+    con2.accept("建筑");
     Consumer<String> con = System.out::print;
-    con.accept("学院");
+    con.accept("大学");
 }
 @Test
 public void testDome2 (){
@@ -294,13 +295,11 @@ public void testDome2 (){
 }
 ```
 
-```
-运行结果:
-安徽职业技术学院
-
-野草
-鲁迅
-```
+> 运行结果:
+> 安徽建筑大学
+>
+> 野草
+> 鲁迅
 
 ##### 2、类::静态方法
 
@@ -321,11 +320,9 @@ public void testDome3 (){
 }
 ```
 
-```
-运行结果：
-0
--1
-```
+> 运行结果：
+> 0
+> -1
 
 ##### 3、类::实例方法
 
@@ -336,15 +333,13 @@ public void testDome4 (){
     BiPredicate<String, String> bp = (x, y) -> x.equals(y);
     BiPredicate<String, String> bp1 = String::equals;
     System.out.println(bp1.test("安徽","安徽"));
-    System.out.println(bp1.test("安徽","安职"));
+    System.out.println(bp1.test("安徽","安建大"));
 }
 ```
 
-```
-运行结果：
-true
-false
-```
+>运行结果：
+>true
+>false
 
 > 注意：
 >
@@ -384,11 +379,9 @@ public void testDome7 (){
 }
 ```
 
-```
-运行结果：
-Book{id='null', title='高等数学', version='null', author='null', status='null', price='null', house='null'}
-Book{id='null', title='高等数学', version='null', author='同济', status='null', price='null', house='null'}
-```
+> 运行结果：
+> Book{id='null', title='高等数学', version='null', author='null', status='null', price='null', house='null'}
+> Book{id='null', title='高等数学', version='null', author='同济', status='null', price='null', house='null'}
 
 > 注意：需要调用的构造参数列表要与函数式接口中抽象方法的参数列表保持一致！
 
@@ -405,26 +398,25 @@ public void testDome8 (){
 }
 ```
 
-```
-运行结果：
-10
-20
-```
+> 运行结果：
+> 10
+> 20
 
 ------
 
 ## 强大的Stream API
 
-Java8 中有两个最为重要的改变。第一个是 Lambda 表达式；另外一个则是 Stream API (java.util.stream.*)。
-
-Stream 是 Java8 中处理集合的关键抽象概念，它可以指定你希望对集合进行的操作，可以执行非常复杂的查找、过滤和映射数据等操作。使用 Stream API 对集合数据进行操作，就类似于使用 SQL 执行的数据库查询。也可以使用 Stream API 来并行执行操作。简而言之，Stream API 提供了一种高效且易于使用的处理数据的方式。
+> Java8 中有两个最为重要的改变。第一个是 Lambda 表达式；另外一个则是 Stream API (java.util.stream.*)。
+>
+> Stream 是 Java8 中处理集合的关键抽象概念，它可以指定你希望对集合进行的操作，可以执行非常复杂的查找、过滤和映射数据等操作。使用 Stream API 对集合数据进行操作，就类似于使用 SQL 执行的数据库查询。也可以使用 Stream API 来并行执行操作。简而言之，Stream API 提供了一种高效且易于使用的处理数据的方式。
+>
 
 ### [什么是 Stream](https://www.bilibili.com/video/BV1h54y1z7L4?p=7)
 
 ##### 流（Stream）到底是什么呢？
 
-是数据渠道，用于操作数据源（集合。数组等）所生成的元素序列。“集合讲的是数据，流讲的是计算！”
-
+> 是数据渠道，用于操作数据源（集合。数组等）所生成的元素序列。“集合讲的是数据，流讲的是计算！”
+>
 > 注意：
 >
 > ​	①  Stream 自己不会存储元素
@@ -435,17 +427,18 @@ Stream 是 Java8 中处理集合的关键抽象概念，它可以指定你希望
 
 ### Stream 的操作三个步骤
 
-- 创建 Stream
-
-一个数据源（如：集合、数组），获取一个流
-
-- 中间操作
-
-一个中间作链，对数据源的数据进行处理
-
-- 终止操作（终端操作）
-
-一个终止操作，执行中间操作链，并产生结果
+> - 创建 Stream
+>
+> 一个数据源（如：集合、数组），获取一个流
+>
+> - 中间操作
+>
+> 一个中间作链，对数据源的数据进行处理
+>
+> - 终止操作（终端操作）
+>
+> 一个终止操作，执行中间操作链，并产生结果
+>
 
 <img src="Java8新特性-P/Stream操作过程.png" style="zoom: 100%;" />
 
@@ -549,7 +542,7 @@ public void testDome (){
 
 > 多个中间操作可以连接起来形成一个流水线，除非流水线上触发终止操作，否则中间操作不会执行任何的处理！而在终止操作时一次性全部处理 ，称为“惰性求值”。
 
-###### [**筛选与切片**](https://www.bilibili.com/video/BV1h54y1z7L4?p=8)
+###### [**筛选与切片**](https://www.bilibili.com/video/BV1h54y1z7L4?p=8) 
 
 |        方法         |                             描述                             |
 | :-----------------: | :----------------------------------------------------------: |
@@ -748,21 +741,21 @@ List<Book> bookList = Arrays.asList(
 @Test
 public void testDome (){
     List<String> list = Arrays.asList("aaa", "bbb", "ccc", "ddd", "eee");
-    System.out.println("------map-----");
+    System.out.println("------ map -----");
     list.stream()
         .map((str) -> str.toUpperCase())
         .forEach(System.out::println);
-    System.out.println("------map-book-----");
+    System.out.println("------ map-book -----");
     bookList.stream()
             .map(Book::getTitle)
             .forEach(System.out::println);
-    System.out.println("------map-----");
+    System.out.println("------ map -----");
     Stream<Stream<Character>> stream = list.stream()
             .map(StreamDome1::filterCharacter); // {{a,a,a}, {b,b,b}, {c,c,c}, {d,d,d}}
     stream.forEach((sm) -> {
         sm.forEach(System.out::println);
     });
-    System.out.println("------flatMap-----");
+    System.out.println("------ flatMap -----");
     Stream<Character> sm = list.stream()
         .flatMap(StreamDome1::filterCharacter); // {a,a,a,b,b,b,c,c,c,d,d,d}
     sm.forEach(System.out::println);
@@ -778,13 +771,13 @@ public static Stream<Character> filterCharacter(String string){
 
 ```
 运行结果：
-------map-----
+------ map -----
 AAA
 BBB
 CCC
 DDD
 EEE
-------map-book-----
+------ map-book -----
 《野草》
 《彷徨》
 《朝花夕拾》
@@ -793,7 +786,7 @@ EEE
 《三国演义》
 《水浒传》
 《西游记》
-------map-----
+------ map -----
 a
 a
 a
@@ -809,7 +802,7 @@ d
 e
 e
 e
-------flatMap-----
+------ flatMap -----
 a
 a
 a
@@ -1022,19 +1015,19 @@ public void testDome11 (){
  */
 @Test
 public void testDome (){
-    System.out.println("--------List--------");
+    System.out.println("-------- List --------");
     // List<String>
     bookList.stream()
             .map(Book::getTitle)
             .collect(Collectors.toList())
             .forEach(System.out::println);
-    System.out.println("--------Set--------");
+    System.out.println("-------- Set --------");
     // Set<String>
     bookList.stream()
             .map(Book::getTitle)
             .collect(Collectors.toSet())
             .forEach(System.out::println);
-    System.out.println("--------Collection--------");
+    System.out.println("-------- Collection --------");
     // HashSet<String>
     bookList.stream()
             .map(Book::getTitle)
@@ -1060,22 +1053,22 @@ public void testDome (){
     DoubleSummaryStatistics collect = bookList.stream()
             .collect(Collectors.summarizingDouble(Book::getPrice));
     System.out.println("集合 -> " + collect);
-    System.out.println("--------分组--------");
+    System.out.println("-------- 分组 --------");
     // Map<Status, List<Book>>
      bookList.stream()
             .collect(Collectors.groupingBy(Book::getStatus))
             .forEach((key, value) -> System.out.println(key + " -> " + value));
-    System.out.println("--------多级分组--------");
+    System.out.println("-------- 多级分组 --------");
     // Map<Status, Map<String, List<Book>>>
      bookList.stream()
             .collect(Collectors.groupingBy(Book::getStatus, Collectors.groupingBy(Book::getAuthor)))
             .forEach((key, value) -> System.out.println(key + " -> " + value));
-    System.out.println("--------分区--------");
+    System.out.println("-------- 分区 --------");
     // Map<Boolean, List<Book>>
     bookList.stream()
              .collect(Collectors.partitioningBy((x) -> x.getPrice() > 30))
              .forEach((key, value) -> System.out.println(key + " -> " + value));
-    System.out.println("--------连接字符串--------");
+    System.out.println("-------- 连接字符串 --------");
     String join = bookList.stream()
             .map(Book::getTitle)
             .collect(Collectors.joining(",", ">>", "<<"));
@@ -1085,7 +1078,7 @@ public void testDome (){
 
 ```
 运行结果：
---------List--------
+-------- List --------
 《野草》
 《彷徨》
 《朝花夕拾》
@@ -1094,7 +1087,7 @@ public void testDome (){
 《三国演义》
 《水浒传》
 《西游记》
---------Set--------
+-------- Set --------
 《三国演义》
 《彷徨》
 《呐喊》
@@ -1102,7 +1095,7 @@ public void testDome (){
 《朝花夕拾》
 《水浒传》
 《野草》
---------Collection--------
+-------- Collection --------
 《三国演义》
 《彷徨》
 《呐喊》
@@ -1117,18 +1110,18 @@ public void testDome (){
 价格最高的书 -> Book{id='null', title='《水浒传》', version='null', author='施耐庵', status='VOCATION', price='45.9', house='null'}
 价格最低的书 -> 25.5
 集合 -> DoubleSummaryStatistics{count=8, sum=274.500000, min=25.500000, average=34.312500, max=45.900000}
---------分组--------
+-------- 分组 --------
 VOCATION -> [Book{id='null', title='《呐喊》', version='null', author='鲁迅', status='VOCATION', price='25.5', house='null'}, Book{id='null', title='《水浒传》', version='null', author='施耐庵', status='VOCATION', price='45.9', house='null'}]
 BUSY -> [Book{id='null', title='《彷徨》', version='null', author='鲁迅', status='BUSY', price='35.7', house='null'}, Book{id='null', title='《朝花夕拾》', version='null', author='鲁迅', status='BUSY', price='30.5', house='null'}]
 FREE -> [Book{id='null', title='《野草》', version='null', author='鲁迅', status='FREE', price='25.5', house='null'}, Book{id='null', title='《朝花夕拾》', version='null', author='鲁迅', status='FREE', price='30.5', house='null'}, Book{id='null', title='《三国演义》', version='null', author='罗贯中', status='FREE', price='35.6', house='null'}, Book{id='null', title='《西游记》', version='null', author='吴承恩', status='FREE', price='45.3', house='null'}]
---------多级分组--------
+-------- 多级分组 --------
 VOCATION -> {鲁迅=[Book{id='null', title='《呐喊》', version='null', author='鲁迅', status='VOCATION', price='25.5', house='null'}], 施耐庵=[Book{id='null', title='《水浒传》', version='null', author='施耐庵', status='VOCATION', price='45.9', house='null'}]}
 BUSY -> {鲁迅=[Book{id='null', title='《彷徨》', version='null', author='鲁迅', status='BUSY', price='35.7', house='null'}, Book{id='null', title='《朝花夕拾》', version='null', author='鲁迅', status='BUSY', price='30.5', house='null'}]}
 FREE -> {吴承恩=[Book{id='null', title='《西游记》', version='null', author='吴承恩', status='FREE', price='45.3', house='null'}], 鲁迅=[Book{id='null', title='《野草》', version='null', author='鲁迅', status='FREE', price='25.5', house='null'}, Book{id='null', title='《朝花夕拾》', version='null', author='鲁迅', status='FREE', price='30.5', house='null'}], 罗贯中=[Book{id='null', title='《三国演义》', version='null', author='罗贯中', status='FREE', price='35.6', house='null'}]}
---------分区--------
+-------- 分区 --------
 false -> [Book{id='null', title='《野草》', version='null', author='鲁迅', status='FREE', price='25.5', house='null'}, Book{id='null', title='《呐喊》', version='null', author='鲁迅', status='VOCATION', price='25.5', house='null'}]
 true -> [Book{id='null', title='《彷徨》', version='null', author='鲁迅', status='BUSY', price='35.7', house='null'}, Book{id='null', title='《朝花夕拾》', version='null', author='鲁迅', status='FREE', price='30.5', house='null'}, Book{id='null', title='《朝花夕拾》', version='null', author='鲁迅', status='BUSY', price='30.5', house='null'}, Book{id='null', title='《三国演义》', version='null', author='罗贯中', status='FREE', price='35.6', house='null'}, Book{id='null', title='《水浒传》', version='null', author='施耐庵', status='VOCATION', price='45.9', house='null'}, Book{id='null', title='《西游记》', version='null', author='吴承恩', status='FREE', price='45.3', house='null'}]
---------连接字符串--------
+-------- 连接字符串 --------
 书名: >>《野草》,《彷徨》,《朝花夕拾》,《呐喊》,《朝花夕拾》,《三国演义》,《水浒传》,《西游记》<<
 ```
 
@@ -1155,14 +1148,12 @@ public void testDome (){
 }
 ```
 
-```
-运行结果：
-1
-4
-9
-16
-25
-```
+> 运行结果：
+> 1
+> 4
+> 9
+> 16
+> 25
 
 ##### 例2
 
@@ -1191,10 +1182,8 @@ public void testDome (){
 }
 ```
 
-```
-运行结果：
-8
-```
+> 运行结果：
+> 8
 
 ##### 例3
 
