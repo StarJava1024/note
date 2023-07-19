@@ -1432,21 +1432,22 @@ public class TestTransaction {
 >
 > 相对于一般的线程池实现,fork/join框架的优势体现在对其中包含的任务的处理方式上.在一般的线程池中,如果一个线程正在执行的任务由于某些原因无法继续运行,那么该线程会处于等待状态.而在fork/join框架实现中,如果某个子问题由于等待另外一个子问题的完成而无法继续运行.那么处理该子问题的线程会主动寻找其他尚未运行的子问题来执行.这种方式减少了线程的等待时间,提高了性能。
 
-##### Optional 容器类：用于尽量避免空指针异常
+##### [Optional 容器类](https://blog.csdn.net/Pluto372/article/details/120724662)：用于尽量避免空指针异常
 
-> * Optional.of(T t) : 创建一个 Optional 实例
->
->  * 	Optional.empty() : 创建一个空的 Optional 实例
->  * 	Optional.ofNullable(T t):若 t 不为 null,创建 Optional 实例,否则创建空实例
->  * 	isPresent() : 判断是否包含值
->  * 	orElse(T t) :  如果调用对象包含值，返回该值，否则返回t
->  * 	orElseGet(Supplier s) :如果调用对象包含值，返回该值，否则返回 s 获取的值
->  * 	map(Function f): 如果有值对其处理，并返回处理后的Optional，否则返回 Optional.empty()
->  * 	flatMap(Function mapper):与 map 类似，要求返回值必须是Optional
+> * Optional.empty() : 创建一个空的 Optional 实例
+> * Optional.of(T t) : 创建一个 Optional 实例，当 t为null时抛出异常（NullPointerException）
+>  * 	Optional.ofNullable(T t) : 创建一个 Optional 实例，但当 t为null时不会抛出异常，而是返回一个空的实例
+>  * 	get() : 获取optional实例中的对象，当optional 容器为空时报错
+>  * 	isPresent() : 判断optional是否为空，如果空则返回false，否则返回true
+>  * 	ifPresent(Consumer c) : 如果optional不为空，则将optional中的对象传给Comsumer函数
+>  * 	filter(Predicate p): Optional<T> : filter() 接受一个 Predicate 参数，返回测试结果为 true 的值。如果测试结果为 false，会返回一个空的 Optional。
+>  * 	map(Function<T, U> mapper)：如果optional不为空，则将optional中的对象 t 映射成另外一个对象 u，并将 u 存放到一个新的optional容器中
+>  * flatMap(Function<T,Optional > mapper)：跟上面一样，在optional不为空的情况下，将对象t映射成另外一个optional
+>  * 	orElse(T t) : 如果optional不为空，则返回optional中的对象；如果为null，则返回 other 这个默认值
+>  * 	orElseGet(Supplier s) : 如果optional不为空，则返回optional中的对象；如果为null，则使用Supplier函数生成默认值other
+>  * 	orElseThrow(Supplier exception)：如果optional不为空，则返回optional中的对象；如果为null，则抛出Supplier函数生成的异常
 
-
-
-## [新时间日期 API](https://www.bilibili.com/video/BV1h54y1z7L4?p=17)
+## [新时间日期 API](https://www.bilibili.com/video/BV1h54y1z7L4?p=17) 
 
 #### 使用LocalDate、LocalTime、LocalDateTime
 
